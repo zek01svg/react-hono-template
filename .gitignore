@@ -13,10 +13,11 @@ dist.zip
 dist-ssr
 *.local
 .tanstack
+coverage
+dist
+build
+data
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
 .idea
 .DS_Store
 *.suo
@@ -30,6 +31,7 @@ coverage.json
 
 # Environment variables
 .env
+.env.*
 
 # Data
 data/

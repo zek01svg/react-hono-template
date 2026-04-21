@@ -1,0 +1,65 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "sortPackageJson": true,
+  "sortTailwindcss": {
+    "functions": ["cn", "cva"]
+  },
+  "sortImports": {
+    "groups": [
+      "type",
+      "react",
+      "next",
+      "expo",
+      "external",
+      "internal_types",
+      "internal",
+      ["parent", "sibling", "index"]
+    ],
+    "customGroups": [
+      {
+        "groupName": "react",
+        "elementNamePattern": ["^react(-native)?(/.*)?$", "^react$"]
+      },
+      {
+        "groupName": "next",
+        "elementNamePattern": ["^next(/.*)?$", "^next$"]
+      },
+      {
+        "groupName": "expo",
+        "elementNamePattern": ["^expo(/.*)?$", "^expo$"]
+      },
+      {
+        "groupName": "internal",
+        "elementNamePattern": ["^#client/", "^#server/"]
+      },
+      {
+        "groupName": "internal_types",
+        "modifiers": ["type"],
+        "elementNamePattern": ["^[.|..|~]"]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.json.hbs"],
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": ["*.js.hbs"],
+      "options": {
+        "parser": "babel"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "src/routeTree.gen.ts",
+    "node_modules",
+    "dist",
+    "data",
+    ".tanstack",
+    "coverage"
+  ]
+}
