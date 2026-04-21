@@ -1,11 +1,6 @@
+import { LandingPage } from "#client/features/landing/landing";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { env } from "#client/env.ts";
-
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: LandingPage,
 });
-
-function Index() {
-  return <div>Hello World {env.VITE_APP_URL}</div>;
-}
