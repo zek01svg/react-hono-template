@@ -57,17 +57,20 @@ bun start
 ### Backend
 
 - **Hono** - Fast, lightweight web framework for TypeScript
-- **@hono/node-server** - Node.js adapter for Hono
+- **Bun** - Native runtime execution for maximum performance
+- **Better Auth** - Production-ready authentication for Hono and React
+- **Drizzle ORM** - Type-safe ORM for PostgreSQL
+- **Scalar** - Beautiful, interactive API documentation at `/api/scalar`
+- **hono-openapi** - Automated OpenAPI spec generation
 - **Zod** - Schema validation and type inference
 - **@t3-oss/env-core** - Type-safe environment variable validation
 
 ### Development Tools
 
+- **Oxc (oxlint/oxfmt)** - Hyper-fast code linting and formatting
 - **Vitest** - Fast unit testing framework
-- **ESLint** - Code linting with TypeScript support
-- **Prettier** - Code formatting
-- **tsx** - TypeScript execution for development
-- **esbuild** - Fast bundling for production builds
+- **esbuild** - High-speed bundling for production builds
+- **Husky + lint-staged** - Pre-commit quality gates
 
 ## Runtime Environment Variables (`/api/runtime.js`)
 
@@ -126,16 +129,18 @@ This approach provides:
 ```
 react-hono-template/
 ├── server/                 # Backend Hono server
-│   ├── index.ts           # Main server entry point
-│   └── env.ts             # Server environment validation
+│   ├── drizzle/           # Database schema and migrations
+│   ├── lib/               # Server-side utilities (Auth, DB, S3)
+│   ├── env.ts             # Server environment validation
+│   └── index.ts           # Main server entry point
 ├── src/                   # Frontend React application
+│   ├── features/          # Feature-based components (Landing, etc.)
+│   ├── lib/               # Frontend utilities and shared logic
 │   ├── routes/            # File-based routing
 │   ├── env.ts             # Client environment variables
 │   ├── main.tsx           # React app entry point
 │   └── globals.css        # Global styles
 ├── dist/                  # Production build output
-│   ├── static/            # Frontend static assets
-│   └── index.js           # Bundled server
 └── tests/                 # Test files
 ```
 
@@ -145,9 +150,11 @@ react-hono-template/
 - `bun build` - Build for production
 - `bun start` - Start production server
 - `bun test` - Run tests
-- `bun lint` - Lint code
-- `bun format` - Check code formatting
+- `bun lint` - Lint code with **oxlint**
+- `bun format` - Check code formatting with **oxfmt**
 - `bun typecheck` - Run TypeScript type checking
+- `bun db:push` - Sync database schema with Drizzle
+- `bun auth:generate` - Generate Better Auth client
 - `bun clean` - Clean build artifacts and dependencies
 
 ## Environment Variables
