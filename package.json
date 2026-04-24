@@ -116,6 +116,7 @@
     "esbuild": "^0.28.0",
     "globals": "^17.5.0",
     "jsdom": "^29.0.2",
+    "lefthook": "^2.1.6",
     "prettier": "^3.8.3",
     "shadcn": "^4.3.1",
     "tailwindcss": "^4.2.2",
