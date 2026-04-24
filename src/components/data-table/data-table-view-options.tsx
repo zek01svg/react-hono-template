@@ -1,8 +1,5 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Check, GripVertical, Settings2 } from "lucide-react";
-
 import {
   Sortable,
   SortableDragHandle,
@@ -24,6 +21,8 @@ import {
   PopoverTrigger,
 } from "#client/components/ui/popover";
 import { cn } from "#client/lib/utils";
+import { Check, GripVertical, Settings2 } from "lucide-react";
+import { useMemo, useState } from "react";
 
 export function DataTableViewOptions() {
   const { table, enableColumnOrdering } = useDataTable();
@@ -47,7 +46,6 @@ export function DataTableViewOptions() {
         <Button
           variant="outline"
           size="icon"
-          role="combobox"
           aria-expanded={open}
           className="h-9 w-9"
         >
@@ -78,8 +76,7 @@ export function DataTableViewOptions() {
                 {sortedColumns
                   .filter(
                     (column) =>
-                      typeof column.accessorFn !== "undefined" &&
-                      column.getCanHide(),
+                      column.accessorFn !== undefined && column.getCanHide(),
                   )
                   .map((column) => (
                     <SortableItem key={column.id} value={column.id} asChild>

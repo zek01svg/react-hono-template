@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Search } from "lucide-react";
-
 import type { DataTableCheckboxFilterField } from "./types";
+
 import { InputWithAddons } from "#client/components/custom/input-with-addons";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Checkbox } from "#client/components/ui/checkbox";
@@ -11,6 +9,8 @@ import { Label } from "#client/components/ui/label";
 import { Skeleton } from "#client/components/ui/skeleton";
 import { formatCompactNumber } from "#client/lib/format";
 import { cn } from "#client/lib/utils";
+import { Search } from "lucide-react";
+import { useState } from "react";
 
 export function DataTableFilterCheckbox<TData>({
   value: _value,

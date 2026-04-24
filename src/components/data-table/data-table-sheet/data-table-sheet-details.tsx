@@ -1,8 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { ChevronDown, ChevronUp, X } from "lucide-react";
-
 import { Kbd } from "#client/components/custom/kbd";
 import {
   Sheet,
@@ -23,6 +20,8 @@ import {
   TooltipTrigger,
 } from "#client/components/ui/tooltip";
 import { cn } from "#client/lib/utils";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
+import * as React from "react";
 
 export interface DataTableSheetDetailsProps {
   title?: React.ReactNode;
@@ -99,7 +98,7 @@ export function DataTableSheetDetails({
         // REMINDER: focus back to the row that was selected
         // We need to manually focus back due to missing Trigger component
         const el = selectedRowKey
-          ? document.getElementById(selectedRowKey)
+          ? document.querySelector(`#${selectedRowKey}`)
           : null;
         table.resetRowSelection();
 
@@ -166,7 +165,7 @@ export function DataTableSheetDetails({
                 </Tooltip>
               </TooltipProvider>
               <Separator orientation="vertical" className="mx-1" />
-              <SheetClose autoFocus={true} asChild>
+              <SheetClose asChild>
                 <Button size="icon" variant="ghost" className="h-7 w-7">
                   <X className="h-5 w-5" />
                   <span className="sr-only">Close</span>

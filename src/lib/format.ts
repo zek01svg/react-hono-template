@@ -18,7 +18,7 @@ export function formatLatency(ms: number): string {
 
 export function formatMilliseconds(value: number) {
   return new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(
-    value
+    value,
   );
 }
 
@@ -33,7 +33,6 @@ export function formatCompactNumber(value: number) {
     return (value / 1000).toFixed(1) + "k"; // Convert to 'k' for thousands
   } else if (value >= 1000000) {
     return (value / 1000000).toFixed(1) + "M"; // Convert to 'M' for millions
-  } else {
-    return value.toString(); // Optionally handle numbers less than 100 if needed
   }
+  return value.toString(); // Optionally handle numbers less than 100 if needed
 }

@@ -1,13 +1,13 @@
+import type { DataTableFilterField } from "./types";
 // TODO: check if we can move to /data-table-filter-command/utils.ts
 import type { ColumnFiltersState } from "@tanstack/react-table";
-import { z } from "zod";
 
-import type { DataTableFilterField } from "./types";
 import {
   ARRAY_DELIMITER,
   RANGE_DELIMITER,
   SLIDER_DELIMITER,
 } from "#client/lib/delimiters";
+import { z } from "zod/v4";
 
 export function deserialize<T extends z.ZodAny>(schema: T) {
   const castToSchema = z.preprocess((val) => {

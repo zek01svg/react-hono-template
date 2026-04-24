@@ -1,6 +1,5 @@
-import * as React from "react";
-
 import { cn } from "#client/lib/utils";
+import * as React from "react";
 
 interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
   containerClassName?: string;

@@ -1,8 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
-
 import { Kbd } from "#client/components/custom/kbd";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Button } from "#client/components/ui/button";
@@ -15,6 +12,9 @@ import {
 import { useHotKey } from "#client/hooks/use-hot-key";
 import { formatCompactNumber } from "#client/lib/format";
 import { useControls } from "#client/providers/controls";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { useMemo } from "react";
+
 import { DataTableFilterControlsDrawer } from "./data-table-filter-controls-drawer";
 import { DataTableResetButton } from "./data-table-reset-button";
 import { DataTableViewOptions } from "./data-table-view-options";
@@ -96,7 +96,7 @@ export function DataTableToolbar({ renderActions }: DataTableToolbarProps) {
         </div>
       </div>
       <div className="ml-auto flex items-center gap-2">
-        {filters.length ? <DataTableResetButton /> : null}
+        {filters.length > 0 ? <DataTableResetButton /> : null}
         {renderActions?.()}
         <DataTableViewOptions />
       </div>

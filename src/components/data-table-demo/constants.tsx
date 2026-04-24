@@ -4,11 +4,12 @@ import type {
   DataTableFilterField,
   Option,
 } from "#client/components/data-table/types";
+import type { ColumnSchema } from "./types";
+
+import { cn } from "#client/lib/utils";
 import { REGIONS } from "#shared/constants/region";
 import { tagColor, TAGS } from "#shared/constants/tag";
 
-import type { ColumnSchema } from "./types";
-import { cn } from "#client/lib/utils";
 import { data } from "./data";
 
 export const filterFields = [
@@ -60,7 +61,7 @@ export const filterFields = [
     // REMINDER: "use client" needs to be declared in the file - otherwise getting serialization error from Server Component
     component: (props: Option) => {
       if (typeof props.value === "boolean") return null;
-      if (typeof props.value === "undefined") return null;
+      if (props.value === undefined) return null;
       return (
         <div className="flex w-full items-center justify-between gap-2">
           <span className="truncate font-normal">{props.value}</span>

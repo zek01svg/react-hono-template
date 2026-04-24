@@ -1,14 +1,14 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
-import { tagColor } from "#shared/constants/tag";
-import { format, isSameDay } from "date-fns";
-import { Check, Minus } from "lucide-react";
-
 import type { ColumnSchema } from "./types";
+import type { ColumnDef } from "@tanstack/react-table";
+
 import { DataTableColumnHeader } from "#client/components/data-table/data-table-column-header";
 import { Badge } from "#client/components/ui/badge";
 import { isArrayOfDates, isArrayOfNumbers } from "#client/lib/is-array";
+import { tagColor } from "#shared/constants/tag";
+import { format, isSameDay } from "date-fns";
+import { Check, Minus } from "lucide-react";
 
 export const columns: ColumnDef<ColumnSchema>[] = [
   {
@@ -75,7 +75,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
     ),
     cell: ({ row }) => {
       const value = row.getValue("p95");
-      if (typeof value === "undefined") {
+      if (value === undefined) {
         return <Minus className="text-muted-foreground/50 h-4 w-4" />;
       }
       return (
@@ -90,10 +90,9 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       if (Array.isArray(value) && isArrayOfNumbers(value)) {
         if (value.length === 1) {
           return value[0] === rowValue;
-        } else {
-          const sorted = value.sort((a, b) => a - b);
-          return sorted[0] <= rowValue && rowValue <= sorted[1];
         }
+        const sorted = value.toSorted((a, b) => a - b);
+        return sorted[0] <= rowValue && rowValue <= sorted[1];
       }
       return false;
     },
@@ -150,7 +149,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       }
       if (Array.isArray(value)) {
         if (isArrayOfDates(value) && rowValue instanceof Date) {
-          const sorted = value.sort((a, b) => a.getTime() - b.getTime());
+          const sorted = value.toSorted((a, b) => a.getTime() - b.getTime());
           // TODO: check length
           return (
             sorted[0]?.getTime() <= rowValue.getTime() &&

@@ -1,9 +1,8 @@
 "use client";
 
+import { cn } from "#client/lib/utils";
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
-
-import { cn } from "#client/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
@@ -47,7 +46,7 @@ function ChartContainer({
   >["children"];
 }) {
   const uniqueId = React.useId();
-  const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`;
+  const chartId = `chart-${id || uniqueId.replaceAll(':', "")}`;
 
   return (
     <ChartContext.Provider value={{ config }}>
@@ -74,7 +73,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     ([, config]) => config.theme || config.color,
   );
 
-  if (!colorConfig.length) {
+  if (colorConfig.length === 0) {
     return null;
   }
 
@@ -311,7 +310,7 @@ function getPayloadConfigFromPayload(
   key: string,
 ) {
   if (typeof payload !== "object" || payload === null) {
-    return undefined;
+    return;
   }
 
   const payloadPayload =

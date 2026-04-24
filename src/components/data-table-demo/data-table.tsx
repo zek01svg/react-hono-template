@@ -1,5 +1,6 @@
 "use client";
 
+import type { DataTableFilterField } from "#client/components/data-table/types";
 import type {
   ColumnDef,
   ColumnFiltersState,
@@ -8,20 +9,6 @@ import type {
   Table as TTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import type { DataTableFilterField } from "#client/components/data-table/types";
-import * as React from "react";
-import {
-  flexRender,
-  getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useQueryStates } from "nuqs";
 
 import {
   Table,
@@ -38,6 +25,20 @@ import { DataTableProvider } from "#client/components/data-table/data-table-prov
 import { DataTableToolbar } from "#client/components/data-table/data-table-toolbar";
 import { useLocalStorage } from "#client/hooks/use-local-storage";
 import { cn } from "#client/lib/utils";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFacetedMinMaxValues,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useQueryStates } from "nuqs";
+import * as React from "react";
+
 import { searchParamsParser } from "./search-params";
 
 export interface DataTableProps<TData, TValue> {

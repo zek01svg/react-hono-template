@@ -1,3 +1,4 @@
+import type { DataTableFilterField } from "#client/components/data-table/types";
 import type {
   ColumnDef,
   ColumnFiltersState,
@@ -7,10 +8,9 @@ import type {
   Table,
   VisibilityState,
 } from "@tanstack/react-table";
-import { createContext, useContext, useMemo } from "react";
 
-import { DataTableFilterField } from "#client/components/data-table/types";
 import { ControlsProvider } from "#client/providers/controls";
+import { createContext, useContext, useMemo } from "react";
 
 // REMINDER: read about how to move controlled state out of the useReactTable hook
 // https://github.com/TanStack/table/discussions/4005#discussioncomment-7303569
@@ -41,8 +41,7 @@ interface DataTableBaseContextType<TData = unknown, TValue = unknown> {
 }
 
 interface DataTableContextType<TData = unknown, TValue = unknown>
-  extends DataTableStateContextType,
-    DataTableBaseContextType<TData, TValue> {}
+  extends DataTableStateContextType, DataTableBaseContextType<TData, TValue> {}
 
 export const DataTableContext = createContext<DataTableContextType<
   any,

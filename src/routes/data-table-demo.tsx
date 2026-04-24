@@ -1,6 +1,6 @@
-import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { createStandardSchemaV1, useQueryStates } from "nuqs";
+import * as React from "react";
 
 import { columns } from "../components/data-table-demo/columns";
 import { filterFields } from "../components/data-table-demo/constants";

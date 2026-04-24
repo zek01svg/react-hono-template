@@ -1,7 +1,3 @@
-import React from "react";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { FilterIcon } from "lucide-react";
-
 import { Kbd } from "#client/components/custom/kbd";
 import { Button } from "#client/components/ui/button";
 import {
@@ -22,6 +18,10 @@ import {
 } from "#client/components/ui/tooltip";
 import { useHotKey } from "#client/hooks/use-hot-key";
 import { useMediaQuery } from "#client/hooks/use-media-query";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { FilterIcon } from "lucide-react";
+import React from "react";
+
 import { DataTableFilterControls } from "./data-table-filter-controls";
 
 export function DataTableFilterControlsDrawer() {

@@ -1,15 +1,18 @@
 "use client";
 
-import * as React from "react";
-import { Table } from "@tanstack/react-table";
+import type { DataTableFilterField, SheetField } from "../types";
+import type { Table } from "@tanstack/react-table";
 
 import { cn } from "#client/lib/utils";
-import { DataTableFilterField, SheetField } from "../types";
+import * as React from "react";
+
 import { DataTableSheetRowAction } from "./data-table-sheet-row-action";
 import { SheetDetailsContentSkeleton } from "./data-table-sheet-skeleton";
 
-interface DataTableSheetContentProps<TData, TMeta>
-  extends React.HTMLAttributes<HTMLDListElement> {
+interface DataTableSheetContentProps<
+  TData,
+  TMeta,
+> extends React.HTMLAttributes<HTMLDListElement> {
   data?: TData;
   table: Table<TData>;
   fields: SheetField<TData, TMeta>[];

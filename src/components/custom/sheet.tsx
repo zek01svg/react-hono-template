@@ -1,12 +1,12 @@
 "use client";
 
 import type { VariantProps } from "class-variance-authority";
-import * as React from "react";
+
+import { cn } from "#client/lib/utils";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { cva } from "class-variance-authority";
 import { X } from "lucide-react";
-
-import { cn } from "#client/lib/utils";
+import * as React from "react";
 
 const Sheet = SheetPrimitive.Root;
 
@@ -51,7 +51,8 @@ const sheetVariants = cva(
 );
 
 interface SheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+  extends
+    React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {
   hideClose?: boolean;
 }
@@ -69,10 +70,7 @@ const SheetContent = React.forwardRef<
     >
       {children}
       {!hideClose ? (
-        <SheetPrimitive.Close
-          autoFocus={true}
-          className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none"
-        >
+        <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>

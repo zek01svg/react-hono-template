@@ -1,8 +1,8 @@
 import type { VariantProps } from "class-variance-authority";
-import * as React from "react";
-import { cva } from "class-variance-authority";
 
 import { cn } from "#client/lib/utils";
+import { cva } from "class-variance-authority";
+import * as React from "react";
 
 // Copy Pasta from: https://github.com/sadmann7/shadcn-table/blob/main/src/components/kbd.tsx#L54
 
@@ -22,7 +22,8 @@ export const kbdVariants = cva(
 );
 
 export interface KbdProps
-  extends React.ComponentPropsWithoutRef<"kbd">,
+  extends
+    React.ComponentPropsWithoutRef<"kbd">,
     VariantProps<typeof kbdVariants> {
   /**
    * The title of the `abbr` element inside the `kbd` element.

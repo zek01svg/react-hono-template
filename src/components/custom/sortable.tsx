@@ -1,5 +1,6 @@
 "use client";
 
+import type { ButtonProps } from "#client/components/ui/button";
 import type {
   DndContextProps,
   DraggableSyntheticListeners,
@@ -8,8 +9,10 @@ import type {
 } from "@dnd-kit/core";
 import type { SortableContextProps } from "@dnd-kit/sortable";
 import type { SlotProps } from "@radix-ui/react-slot";
-import type { ButtonProps } from "#client/components/ui/button";
-import * as React from "react";
+
+import { Button } from "#client/components/ui/button";
+import { composeRefs } from "#client/lib/compose-refs";
+import { cn } from "#client/lib/utils";
 import {
   closestCenter,
   defaultDropAnimationSideEffects,
@@ -35,11 +38,8 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Slot } from "@radix-ui/react-slot";
+import * as React from "react";
 import { createPortal } from "react-dom";
-
-import { Button } from "#client/components/ui/button";
-import { composeRefs } from "#client/lib/compose-refs";
-import { cn } from "#client/lib/utils";
 
 const orientationConfig = {
   vertical: {
@@ -56,8 +56,9 @@ const orientationConfig = {
   },
 };
 
-interface SortableProps<TData extends { id: UniqueIdentifier }>
-  extends DndContextProps {
+interface SortableProps<
+  TData extends { id: UniqueIdentifier },
+> extends DndContextProps {
   /**
    * An array of data items that the sortable component will render.
    * @example
@@ -204,8 +205,9 @@ const dropAnimationOpts: DropAnimation = {
   }),
 };
 
-interface SortableOverlayProps
-  extends React.ComponentPropsWithRef<typeof DragOverlay> {
+interface SortableOverlayProps extends React.ComponentPropsWithRef<
+  typeof DragOverlay
+> {
   activeId?: UniqueIdentifier | null;
 }
 

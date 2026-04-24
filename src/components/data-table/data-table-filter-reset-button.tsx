@@ -1,10 +1,10 @@
 "use client";
 
-import { X } from "lucide-react";
-
 import type { DataTableFilterField } from "./types";
+
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Button } from "#client/components/ui/button";
+import { X } from "lucide-react";
 
 export function DataTableFilterResetButton<TData>({
   value: _value,
@@ -40,10 +40,10 @@ export function DataTableFilterResetButton<TData>({
       asChild
     >
       {/* REMINDER: `AccordionTrigger` is also a button(!) and we get Hydration error when rendering button within button */}
-      <div role="button" tabIndex={0}>
+      <span>
         <span>{filters.length}</span>
         <X className="text-muted-foreground ml-1 h-2.5 w-2.5" />
-      </div>
+      </span>
     </Button>
   );
 }

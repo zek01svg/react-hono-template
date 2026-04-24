@@ -1,13 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
-
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Button } from "#client/components/ui/button";
 import {
@@ -17,6 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "#client/components/ui/select";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
+import { useMemo } from "react";
 
 export function DataTablePagination() {
   const { table, pagination, columnFilters } = useDataTable();

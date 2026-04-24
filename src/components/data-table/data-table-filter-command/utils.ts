@@ -1,7 +1,7 @@
-import { ColumnFiltersState } from "@tanstack/react-table";
-import { ParserBuilder } from "nuqs";
-
 import type { DataTableFilterField } from "../types";
+import type { ColumnFiltersState } from "@tanstack/react-table";
+import type { ParserBuilder } from "nuqs";
+
 import {
   ARRAY_DELIMITER,
   RANGE_DELIMITER,
@@ -90,7 +90,7 @@ export function getFieldOptions<TData>({
       return field.options?.length
         ? field.options
             .map(({ value }) => value)
-            .sort((a, b) => Number(a) - Number(b))
+            .toSorted((a, b) => Number(a) - Number(b))
             .filter(notEmpty)
         : Array.from(
             { length: field.max - field.min + 1 },

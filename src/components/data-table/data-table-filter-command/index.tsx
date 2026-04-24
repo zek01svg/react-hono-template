@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { formatDistanceToNow } from "date-fns";
-import { LoaderCircle, Search, X } from "lucide-react";
-import { ParserBuilder } from "nuqs";
-
 import type { DataTableFilterField } from "../types";
+import type { ParserBuilder } from "nuqs";
+
 import { Kbd } from "#client/components/custom/kbd";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import {
@@ -22,6 +19,10 @@ import { useHotKey } from "#client/hooks/use-hot-key";
 import { useLocalStorage } from "#client/hooks/use-local-storage";
 import { formatCompactNumber } from "#client/lib/format";
 import { cn } from "#client/lib/utils";
+import { formatDistanceToNow } from "date-fns";
+import { LoaderCircle, Search, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
 import {
   columnFiltersParser,
   getFieldOptions,
@@ -82,10 +83,6 @@ export function DataTableFilterCommand({
     const currentEnabledFilters = currentFilters.filter((filter) => {
       const field = _filterFields?.find((field) => field.value === filter.id);
       return !field?.commandDisabled;
-    });
-    const currentDisabledFilters = currentFilters.filter((filter) => {
-      const field = _filterFields?.find((field) => field.value === filter.id);
-      return field?.commandDisabled;
     });
 
     for (const key of Object.keys(searchParams)) {
@@ -282,7 +279,7 @@ export function DataTableFilterCommand({
               <CommandSeparator />
               <CommandGroup heading="Suggestions">
                 {lastSearches
-                  ?.sort((a, b) => b.timestamp - a.timestamp)
+                  ?.toSorted((a, b) => b.timestamp - a.timestamp)
                   .slice(0, 5)
                   .map((item) => {
                     return (
@@ -355,7 +352,7 @@ export function DataTableFilterCommand({
                   Range: <Kbd variant="outline">p95:59-340</Kbd>
                 </span>
               </div>
-              {lastSearches.length ? (
+              {lastSearches.length > 0 ? (
                 <button
                   type="button"
                   className="text-muted-foreground hover:text-accent-foreground"

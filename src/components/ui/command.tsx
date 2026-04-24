@@ -1,7 +1,3 @@
-import * as React from "react";
-import { Command as CommandPrimitive } from "cmdk";
-import { SearchIcon } from "lucide-react";
-
 import {
   Dialog,
   DialogContent,
@@ -10,6 +6,9 @@ import {
   DialogTitle,
 } from "#client/components/ui/dialog";
 import { cn } from "#client/lib/utils";
+import { Command as CommandPrimitive } from "cmdk";
+import { SearchIcon } from "lucide-react";
+import * as React from "react";
 
 function Command({
   className,

@@ -2,10 +2,6 @@
 
 import type { DatePreset } from "#client/components/data-table/types";
 import type { DateRange } from "react-day-picker";
-import * as React from "react";
-import { presets as defaultPresets } from "#shared/constants/date-preset.ts";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
 
 import { kbdVariants } from "#client/components/custom/kbd";
 import { Button } from "#client/components/ui/button";
@@ -29,9 +25,12 @@ import {
 import { Separator } from "#client/components/ui/separator";
 import { useDebounce } from "#client/hooks/use-debounce";
 import { cn } from "#client/lib/utils";
+import { presets as defaultPresets } from "#shared/constants/date-preset.ts";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import * as React from "react";
 
-interface DatePickerWithRangeProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
   date: DateRange | undefined;
   setDate: (date: DateRange | undefined) => void;
   presets?: DatePreset[];

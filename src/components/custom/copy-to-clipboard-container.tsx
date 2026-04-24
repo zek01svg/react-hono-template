@@ -1,13 +1,14 @@
 "use client";
 
-import * as React from "react";
-import { cva, VariantProps } from "class-variance-authority";
-import { Check, Copy, Plus } from "lucide-react";
+import type { VariantProps } from "class-variance-authority";
 
 import { Button } from "#client/components/ui/button";
 import { useCopyToClipboard } from "#client/hooks/use-copy-to-clipboard";
 import { composeRefs } from "#client/lib/compose-refs";
 import { cn } from "#client/lib/utils";
+import { cva } from "class-variance-authority";
+import { Check, Copy, Plus } from "lucide-react";
+import * as React from "react";
 
 const containerVariants = cva(
   "peer rounded-md border p-2 font-mono text-sm break-all whitespace-pre-wrap",
@@ -25,7 +26,8 @@ const containerVariants = cva(
 );
 
 export interface CopyToClipboardContainerProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof containerVariants> {
   /**
    * If set and the content exceeds the maximum height,
@@ -52,7 +54,7 @@ export const CopyToClipboardContainer = React.forwardRef<
         setCollapsible(false);
       }
     }
-  }, [innerRef.current, maxHeight]);
+  }, [maxHeight]);
 
   return (
     <div

@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import type { DataTableSliderFilterField } from "./types";
+
 import { InputWithAddons } from "#client/components/custom/input-with-addons";
 import { Slider } from "#client/components/custom/slider";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Label } from "#client/components/ui/label";
 import { useDebounce } from "#client/hooks/use-debounce";
 import { isArrayOfNumbers } from "#client/lib/is-array";
+import { useEffect, useState } from "react";
 
 function getFilter(filterValue: unknown) {
   return typeof filterValue === "number"

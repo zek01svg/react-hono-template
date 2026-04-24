@@ -1,5 +1,3 @@
-import { Check, Copy } from "lucide-react";
-
 import {
   Table,
   TableBody,
@@ -7,6 +5,7 @@ import {
   TableRow,
 } from "#client/components/custom/table";
 import { useCopyToClipboard } from "#client/hooks/use-copy-to-clipboard";
+import { Check, Copy } from "lucide-react";
 
 interface KVTableProps {
   data: Record<string, string | number | boolean>;

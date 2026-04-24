@@ -1,9 +1,8 @@
-import { StrictMode } from "react";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 import "./globals.css";
-
 import { NuqsProvider } from "./providers/nuqs";
 import { ReactQueryProvider } from "./providers/react-query";
 // Import the generated route tree
@@ -20,7 +19,7 @@ declare module "@tanstack/react-router" {
 }
 
 // Render the app
-const rootElement = document.getElementById("root");
+const rootElement = document.querySelector("#root");
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
