@@ -28,6 +28,7 @@ jobs:
           GITLEAKS_ENABLE_COMMENTS: false
         with:
           args: dir . --redact --verbose
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run format, lint, and typecheck concurrently
         run: bunx concurrently "bun run format" "bun run lint" "bun run typecheck"
