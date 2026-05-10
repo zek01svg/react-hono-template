@@ -28,7 +28,7 @@ export function DataTableFilterControls() {
         ?.filter(({ defaultOpen }) => defaultOpen)
         ?.map(({ value }) => value as string)}
     >
-      {filterFields?.map((field) => {
+      {filterFields?.map(field => {
         const value = field.value as string;
         return (
           <AccordionItem key={value} value={value} className="border-none">
@@ -36,8 +36,7 @@ export function DataTableFilterControls() {
               <div className="flex w-full items-center justify-between gap-2 truncate py-2 pr-2">
                 <div className="flex items-center gap-2 truncate">
                   <p className="text-sm font-medium">{field.label}</p>
-                  {value !== field.label.toLowerCase() &&
-                  !field.commandDisabled ? (
+                  {value !== field.label.toLowerCase() && !field.commandDisabled ? (
                     <p className="text-muted-foreground mt-px truncate font-mono text-[10px]">
                       {value}
                     </p>

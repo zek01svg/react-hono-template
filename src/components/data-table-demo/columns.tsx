@@ -38,7 +38,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       const array = row.getValue(id) as string[];
       if (typeof value === "string") return array.includes(value);
       // up to the user to define either `.some` or `.every`
-      if (Array.isArray(value)) return value.some((i) => array.includes(i));
+      if (Array.isArray(value)) return value.some(i => array.includes(i));
       return false;
     },
   },
@@ -50,7 +50,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       if (Array.isArray(value)) {
         return (
           <div className="flex flex-wrap gap-1">
-            {value.map((v) => (
+            {value.map(v => (
               <Badge key={v} className={tagColor[v].badge}>
                 {v}
               </Badge>
@@ -64,15 +64,13 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       const array = row.getValue(id) as string[];
       if (typeof value === "string") return array.includes(value);
       // up to the user to define either `.some` or `.every`
-      if (Array.isArray(value)) return value.some((i) => array.includes(i));
+      if (Array.isArray(value)) return value.some(i => array.includes(i));
       return false;
     },
   },
   {
     accessorKey: "p95",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="P95" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="P95" />,
     cell: ({ row }) => {
       const value = row.getValue("p95");
       if (value === undefined) {
@@ -131,9 +129,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
   },
   {
     accessorKey: "date",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
     cell: ({ row }) => {
       const value = row.getValue("date");
       return (
@@ -152,8 +148,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
           const sorted = value.toSorted((a, b) => a.getTime() - b.getTime());
           // TODO: check length
           return (
-            sorted[0]?.getTime() <= rowValue.getTime() &&
-            rowValue.getTime() <= sorted[1]?.getTime()
+            sorted[0]?.getTime() <= rowValue.getTime() && rowValue.getTime() <= sorted[1]?.getTime()
           );
         }
       }

@@ -29,7 +29,7 @@ export function DataTableColumnHeader<TData, TValue>({
       }}
       className={cn(
         "flex h-7 w-full items-center justify-between gap-2 px-0 py-0 hover:bg-transparent",
-        className,
+        className
       )}
       {...props}
     >
@@ -38,17 +38,13 @@ export function DataTableColumnHeader<TData, TValue>({
         <ChevronUp
           className={cn(
             "-mb-0.5 h-3 w-3",
-            column.getIsSorted() === "asc"
-              ? "text-accent-foreground"
-              : "text-muted-foreground",
+            column.getIsSorted() === "asc" ? "text-accent-foreground" : "text-muted-foreground"
           )}
         />
         <ChevronDown
           className={cn(
             "-mt-0.5 h-3 w-3",
-            column.getIsSorted() === "desc"
-              ? "text-accent-foreground"
-              : "text-muted-foreground",
+            column.getIsSorted() === "desc" ? "text-accent-foreground" : "text-muted-foreground"
           )}
         />
       </span>

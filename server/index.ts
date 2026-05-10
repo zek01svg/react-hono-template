@@ -28,22 +28,22 @@ const baseRoutes = new Hono()
         },
       },
     }),
-    (c) => {
+    c => {
       return c.json({
         status: "ok",
       });
-    },
+    }
   )
-  .get("/api/runtime.js", (c) => {
+  .get("/api/runtime.js", c => {
     return c.text(
       `
     window.__env = ${JSON.stringify(Object.fromEntries(Object.entries(env).filter(([key]) => key.startsWith("VITE_"))), null, 2)}
     `.trim(),
       200,
-      { "Content-Type": "application/javascript" },
+      { "Content-Type": "application/javascript" }
     );
   })
-  .on(["POST", "GET"], "/api/auth/*", (c) => {
+  .on(["POST", "GET"], "/api/auth/*", c => {
     return auth.handler(c.req.raw);
   })
   .use("/assets/*", serveStatic({ root: "./dist/static" }))
@@ -67,14 +67,14 @@ const apiRoutes = new Hono()
           },
         ],
       },
-    }),
+    })
   )
   .get(
     "/scalar",
     Scalar({
       url: "/api/openapi",
       theme: "deepSpace",
-    }),
+    })
   );
 
 app.route("/api", apiRoutes);
@@ -87,7 +87,7 @@ app.onError((err, c) => {
         error: "Validation failed",
         details: err.message,
       },
-      400,
+      400
     );
   }
   console.error(err);
@@ -96,7 +96,7 @@ app.onError((err, c) => {
       error: "Internal Server Error",
       message: err.message,
     },
-    500,
+    500
   );
 });
 

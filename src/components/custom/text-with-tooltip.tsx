@@ -46,11 +46,7 @@ export function TextWithTooltip({ text, className }: TextWithTooltipProps) {
         <TooltipTrigger disabled={!isTruncated} asChild>
           <div
             ref={textRef}
-            className={cn(
-              "truncate",
-              !isTruncated && "pointer-events-none",
-              className,
-            )}
+            className={cn("truncate", !isTruncated && "pointer-events-none", className)}
           >
             {text}
           </div>

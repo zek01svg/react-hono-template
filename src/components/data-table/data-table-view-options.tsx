@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Sortable,
-  SortableDragHandle,
-  SortableItem,
-} from "#client/components/custom/sortable";
+import { Sortable, SortableDragHandle, SortableItem } from "#client/components/custom/sortable";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Button } from "#client/components/ui/button";
 import {
@@ -15,11 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from "#client/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "#client/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "#client/components/ui/popover";
 import { cn } from "#client/lib/utils";
 import { Check, GripVertical, Settings2 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -37,54 +29,38 @@ export function DataTableViewOptions() {
       table.getAllColumns().sort((a, b) => {
         return columnOrder.indexOf(a.id) - columnOrder.indexOf(b.id);
       }),
-    [columnOrder],
+    [columnOrder]
   );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          aria-expanded={open}
-          className="h-9 w-9"
-        >
+        <Button variant="outline" size="icon" aria-expanded={open} className="h-9 w-9">
           <Settings2 className="h-4 w-4" />
           <span className="sr-only">View</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent side="bottom" align="end" className="w-[200px] p-0">
         <Command>
-          <CommandInput
-            value={search}
-            onValueChange={setSearch}
-            placeholder="Search options..."
-          />
+          <CommandInput value={search} onValueChange={setSearch} placeholder="Search options..." />
           <CommandList>
             <CommandEmpty>No option found.</CommandEmpty>
             <CommandGroup>
               <Sortable
-                value={sortedColumns.map((c) => ({ id: c.id }))}
-                onValueChange={(items) =>
-                  table.setColumnOrder(items.map((c) => c.id))
-                }
+                value={sortedColumns.map(c => ({ id: c.id }))}
+                onValueChange={items => table.setColumnOrder(items.map(c => c.id))}
                 overlay={<div className="bg-muted/60 h-8 w-full rounded-md" />}
                 onDragStart={() => setDrag(true)}
                 onDragEnd={() => setDrag(false)}
                 onDragCancel={() => setDrag(false)}
               >
                 {sortedColumns
-                  .filter(
-                    (column) =>
-                      column.accessorFn !== undefined && column.getCanHide(),
-                  )
-                  .map((column) => (
+                  .filter(column => column.accessorFn !== undefined && column.getCanHide())
+                  .map(column => (
                     <SortableItem key={column.id} value={column.id} asChild>
                       <CommandItem
                         value={column.id}
-                        onSelect={() =>
-                          column.toggleVisibility(!column.getIsVisible())
-                        }
+                        onSelect={() => column.toggleVisibility(!column.getIsVisible())}
                         className={"capitalize"}
                         disabled={drag}
                       >
@@ -93,7 +69,7 @@ export function DataTableViewOptions() {
                             "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
                             column.getIsVisible()
                               ? "bg-primary text-primary-foreground"
-                              : "opacity-50 [&_svg]:invisible",
+                              : "opacity-50 [&_svg]:invisible"
                           )}
                         >
                           <Check className={cn("h-4 w-4")} />
@@ -105,10 +81,7 @@ export function DataTableViewOptions() {
                             size="icon"
                             className="text-muted-foreground hover:text-foreground focus:bg-muted focus:text-foreground ml-auto size-5"
                           >
-                            <GripVertical
-                              className="size-4"
-                              aria-hidden="true"
-                            />
+                            <GripVertical className="size-4" aria-hidden="true" />
                           </SortableDragHandle>
                         ) : null}
                       </CommandItem>

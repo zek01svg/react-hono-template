@@ -12,7 +12,7 @@ export function SheetDetailsContentSkeleton<TData, TMeta>({
 }: SheetDetailsContentSkeletonProps<TData, TMeta>) {
   return (
     <dl className="divide-y">
-      {fields.map((field) => (
+      {fields.map(field => (
         <div
           key={field.id.toString()}
           className="flex items-center justify-between gap-4 py-2 text-sm"

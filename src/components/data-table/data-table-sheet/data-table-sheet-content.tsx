@@ -9,10 +9,7 @@ import * as React from "react";
 import { DataTableSheetRowAction } from "./data-table-sheet-row-action";
 import { SheetDetailsContentSkeleton } from "./data-table-sheet-skeleton";
 
-interface DataTableSheetContentProps<
-  TData,
-  TMeta,
-> extends React.HTMLAttributes<HTMLDListElement> {
+interface DataTableSheetContentProps<TData, TMeta> extends React.HTMLAttributes<HTMLDListElement> {
   data?: TData;
   table: Table<TData>;
   fields: SheetField<TData, TMeta>[];
@@ -40,7 +37,7 @@ export function DataTableSheetContent<TData, TMeta>({
 
   return (
     <dl className={cn("divide-y", className)} {...props}>
-      {fields.map((field) => {
+      {fields.map(field => {
         if (field.condition && !field.condition(data)) return null;
 
         const Component = field.component;
@@ -52,18 +49,12 @@ export function DataTableSheetContent<TData, TMeta>({
               <div
                 className={cn(
                   "my-1 flex w-full items-center justify-between gap-4 py-1 text-sm",
-                  field.className,
+                  field.className
                 )}
               >
-                <dt className="text-muted-foreground shrink-0">
-                  {field.label}
-                </dt>
+                <dt className="text-muted-foreground shrink-0">{field.label}</dt>
                 <dd className="w-full text-right font-mono">
-                  {Component ? (
-                    <Component {...data} metadata={metadata} />
-                  ) : (
-                    value
-                  )}
+                  {Component ? <Component {...data} metadata={metadata} /> : value}
                 </dd>
               </div>
             ) : (
@@ -74,18 +65,12 @@ export function DataTableSheetContent<TData, TMeta>({
                 table={table}
                 className={cn(
                   "my-1 flex w-full items-center justify-between gap-4 py-1 text-sm",
-                  field.className,
+                  field.className
                 )}
               >
-                <dt className="text-muted-foreground shrink-0">
-                  {field.label}
-                </dt>
+                <dt className="text-muted-foreground shrink-0">{field.label}</dt>
                 <dd className="w-full text-right font-mono">
-                  {Component ? (
-                    <Component {...data} metadata={metadata} />
-                  ) : (
-                    value
-                  )}
+                  {Component ? <Component {...data} metadata={metadata} /> : value}
                 </dd>
               </DataTableSheetRowAction>
             )}
@@ -96,10 +81,7 @@ export function DataTableSheetContent<TData, TMeta>({
   );
 }
 
-export const MemoizedDataTableSheetContent = React.memo(
-  DataTableSheetContent,
-  (prev, next) => {
-    // REMINDER: only check if data is the same, rest is useless
-    return prev.data === next.data;
-  },
-) as typeof DataTableSheetContent;
+export const MemoizedDataTableSheetContent = React.memo(DataTableSheetContent, (prev, next) => {
+  // REMINDER: only check if data is the same, rest is useless
+  return prev.data === next.data;
+}) as typeof DataTableSheetContent;

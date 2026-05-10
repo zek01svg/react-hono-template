@@ -22,13 +22,11 @@ const containerVariants = cva(
         variant: "default",
       },
     },
-  },
+  }
 );
 
 export interface CopyToClipboardContainerProps
-  extends
-    React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof containerVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof containerVariants> {
   /**
    * If set and the content exceeds the maximum height,
    * a "Show content" button will collapse the full content
@@ -69,10 +67,8 @@ export const CopyToClipboardContainer = React.forwardRef<
         ref={composeRefs(ref, innerRef)}
         className={cn(
           containerVariants({ variant }),
-          collapsible && !open
-            ? "max-h-[var(--max-height)] overflow-hidden"
-            : undefined,
-          className,
+          collapsible && !open ? "max-h-[var(--max-height)] overflow-hidden" : undefined,
+          className
         )}
         {...props}
       >
@@ -87,11 +83,7 @@ export const CopyToClipboardContainer = React.forwardRef<
           if (content) copy(content);
         }}
       >
-        {!isCopied ? (
-          <Copy className="h-3 w-3" />
-        ) : (
-          <Check className="h-3 w-3" />
-        )}
+        {!isCopied ? <Copy className="h-3 w-3" /> : <Check className="h-3 w-3" />}
       </Button>
       {collapsible && !open ? (
         <div className="from-background/0 to-background/100 absolute inset-x-px bottom-px flex items-center justify-center rounded-b-md bg-gradient-to-b">
