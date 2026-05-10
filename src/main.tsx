@@ -29,6 +29,6 @@ if (rootElement && !rootElement.innerHTML) {
           <RouterProvider router={router} />
         </NuqsProvider>
       </ReactQueryProvider>
-    </StrictMode>,
+    </StrictMode>
   );
 }

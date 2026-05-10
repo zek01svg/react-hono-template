@@ -1,8 +1,4 @@
-import {
-  ARRAY_DELIMITER,
-  RANGE_DELIMITER,
-  SLIDER_DELIMITER,
-} from "#client/lib/delimiters";
+import { ARRAY_DELIMITER, RANGE_DELIMITER, SLIDER_DELIMITER } from "#client/lib/delimiters";
 // Note: import from 'nuqs/server' to avoid the "use client" directive
 import { REGIONS } from "#shared/constants/region";
 import { TAGS } from "#shared/constants/tag";

@@ -10,16 +10,11 @@ export function formatLatency(ms: number): string {
     );
   }
 
-  return (
-    new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(ms) +
-    "ms"
-  );
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(ms) + "ms";
 }
 
 export function formatMilliseconds(value: number) {
-  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(
-    value,
-  );
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(value);
 }
 
 export function formatDate(value: Date | string) {

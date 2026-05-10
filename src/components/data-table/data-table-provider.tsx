@@ -30,23 +30,14 @@ interface DataTableBaseContextType<TData = unknown, TValue = unknown> {
   filterFields: DataTableFilterField<TData>[];
   columns: ColumnDef<TData, TValue>[];
   isLoading?: boolean;
-  getFacetedUniqueValues?: (
-    table: Table<TData>,
-    columnId: string,
-  ) => Map<string, number>;
-  getFacetedMinMaxValues?: (
-    table: Table<TData>,
-    columnId: string,
-  ) => undefined | [number, number];
+  getFacetedUniqueValues?: (table: Table<TData>, columnId: string) => Map<string, number>;
+  getFacetedMinMaxValues?: (table: Table<TData>, columnId: string) => undefined | [number, number];
 }
 
 interface DataTableContextType<TData = unknown, TValue = unknown>
   extends DataTableStateContextType, DataTableBaseContextType<TData, TValue> {}
 
-export const DataTableContext = createContext<DataTableContextType<
-  any,
-  any
-> | null>(null);
+export const DataTableContext = createContext<DataTableContextType<any, any> | null>(null);
 
 export function DataTableProvider<TData, TValue>({
   children,
@@ -80,7 +71,7 @@ export function DataTableProvider<TData, TValue>({
       props.isLoading,
       props.getFacetedUniqueValues,
       props.getFacetedMinMaxValues,
-    ],
+    ]
   );
 
   return (

@@ -33,10 +33,7 @@ interface DataTableSheetRowActionProps<
   table: Table<TData>;
 }
 
-export function DataTableSheetRowAction<
-  TData,
-  TFields extends DataTableFilterField<TData>,
->({
+export function DataTableSheetRowAction<TData, TFields extends DataTableFilterField<TData>>({
   fieldValue,
   filterFields,
   value,
@@ -47,7 +44,7 @@ export function DataTableSheetRowAction<
   ...props
 }: DataTableSheetRowActionProps<TData, TFields>) {
   const { copy, isCopied } = useCopyToClipboard();
-  const field = filterFields.find((field) => field.value === fieldValue);
+  const field = filterFields.find(f => f.value === fieldValue);
   const column = table.getColumn(fieldValue.toString());
 
   if (!field || !column) return null;
@@ -60,9 +57,7 @@ export function DataTableSheetRowAction<
           <DropdownMenuItem
             onClick={() => {
               // FIXME:
-              const filterValue = column?.getFilterValue() as
-                | undefined
-                | Array<unknown>;
+              const filterValue = column?.getFilterValue() as undefined | Array<unknown>;
               const newValue = filterValue?.includes(value)
                 ? filterValue
                 : [...(filterValue || []), value];
@@ -84,16 +79,12 @@ export function DataTableSheetRowAction<
       case "slider":
         return (
           <DropdownMenuGroup>
-            <DropdownMenuItem
-              onClick={() => column?.setFilterValue([0, value])}
-            >
+            <DropdownMenuItem onClick={() => column?.setFilterValue([0, value])}>
               {/* FIXME: change icon as it is not clear */}
               <ChevronLeft />
               Less or equal than
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => column?.setFilterValue([value, 5000])}
-            >
+            <DropdownMenuItem onClick={() => column?.setFilterValue([value, 5000])}>
               {/* FIXME: change icon as it is not clear */}
               <ChevronRight />
               Greater or equal than
@@ -145,9 +136,9 @@ export function DataTableSheetRowAction<
         className={cn(
           "ring-offset-background focus-visible:ring-ring rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
           "relative",
-          className,
+          className
         )}
-        onKeyDown={(e) => {
+        onKeyDown={e => {
           if (e.key === "ArrowDown") {
             // REMINDER: default behavior is to open the dropdown menu
             // But because we use it to navigate between rows, we need to prevent it
@@ -160,17 +151,13 @@ export function DataTableSheetRowAction<
       >
         {children}
         {isCopied ? (
-          <div className="bg-background/70 absolute inset-0 place-content-center">
-            Value copied
-          </div>
+          <div className="bg-background/70 absolute inset-0 place-content-center">Value copied</div>
         ) : null}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="left">
         {renderOptions()}
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => copy(String(value), { timeout: 1000 })}
-        >
+        <DropdownMenuItem onClick={() => copy(String(value), { timeout: 1000 })}>
           <Copy />
           Copy value
         </DropdownMenuItem>

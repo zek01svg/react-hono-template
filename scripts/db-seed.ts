@@ -1,11 +1,8 @@
 import { db } from "#server/drizzle/db.ts";
-import {
-  account as accountTable,
-  user as userTable,
-} from "#server/drizzle/schema/auth.ts";
+import { account as accountTable, user as userTable } from "#server/drizzle/schema/auth.ts";
 import { hashPassword } from "better-auth/crypto";
 
-await db.transaction(async (tx) => {
+await db.transaction(async tx => {
   // Admin user
   await tx
     .insert(userTable)

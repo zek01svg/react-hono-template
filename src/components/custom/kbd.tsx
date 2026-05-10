@@ -18,13 +18,11 @@ export const kbdVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  },
+  }
 );
 
 export interface KbdProps
-  extends
-    React.ComponentPropsWithoutRef<"kbd">,
-    VariantProps<typeof kbdVariants> {
+  extends React.ComponentPropsWithoutRef<"kbd">, VariantProps<typeof kbdVariants> {
   /**
    * The title of the `abbr` element inside the `kbd` element.
    * @default undefined
@@ -37,11 +35,7 @@ export interface KbdProps
 const Kbd = React.forwardRef<HTMLUnknownElement, KbdProps>(
   ({ abbrTitle, children, className, variant, ...props }, ref) => {
     return (
-      <kbd
-        className={cn(kbdVariants({ variant, className }))}
-        ref={ref}
-        {...props}
-      >
+      <kbd className={cn(kbdVariants({ variant, className }))} ref={ref} {...props}>
         {abbrTitle ? (
           <abbr title={abbrTitle} className="no-underline">
             {children}
@@ -51,7 +45,7 @@ const Kbd = React.forwardRef<HTMLUnknownElement, KbdProps>(
         )}
       </kbd>
     );
-  },
+  }
 );
 Kbd.displayName = "Kbd";
 

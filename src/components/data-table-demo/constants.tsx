@@ -1,9 +1,6 @@
 "use client";
 
-import type {
-  DataTableFilterField,
-  Option,
-} from "#client/components/data-table/types";
+import type { DataTableFilterField, Option } from "#client/components/data-table/types";
 import type { ColumnSchema } from "./types";
 
 import { cn } from "#client/lib/utils";
@@ -30,13 +27,13 @@ export const filterFields = [
     label: "Public",
     value: "public",
     type: "checkbox",
-    options: [true, false].map((bool) => ({ label: `${bool}`, value: bool })),
+    options: [true, false].map(bool => ({ label: `${bool}`, value: bool })),
   },
   {
     label: "Active",
     value: "active",
     type: "checkbox",
-    options: [true, false].map((bool) => ({ label: `${bool}`, value: bool })),
+    options: [true, false].map(bool => ({ label: `${bool}`, value: bool })),
   },
   {
     label: "P95",
@@ -51,7 +48,7 @@ export const filterFields = [
     label: "Regions",
     value: "regions",
     type: "checkbox",
-    options: REGIONS.map((region) => ({ label: region, value: region })),
+    options: REGIONS.map(region => ({ label: region, value: region })),
   },
   {
     label: "Tags",
@@ -65,12 +62,10 @@ export const filterFields = [
       return (
         <div className="flex w-full items-center justify-between gap-2">
           <span className="truncate font-normal">{props.value}</span>
-          <span
-            className={cn("h-2 w-2 rounded-full", tagColor[props.value].dot)}
-          />
+          <span className={cn("h-2 w-2 rounded-full", tagColor[props.value].dot)} />
         </div>
       );
     },
-    options: TAGS.map((tag) => ({ label: tag, value: tag })),
+    options: TAGS.map(tag => ({ label: tag, value: tag })),
   },
 ] satisfies DataTableFilterField<ColumnSchema>[];

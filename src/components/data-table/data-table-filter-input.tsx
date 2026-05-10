@@ -13,13 +13,11 @@ function getFilter(filterValue: unknown) {
   return typeof filterValue === "string" ? filterValue : null;
 }
 
-export function DataTableFilterInput<TData>({
-  value: _value,
-}: DataTableInputFilterField<TData>) {
+export function DataTableFilterInput<TData>({ value: _value }: DataTableInputFilterField<TData>) {
   const value = _value as string;
   const { table, columnFilters } = useDataTable();
   const column = table.getColumn(value);
-  const filterValue = columnFilters.find((i) => i.id === value)?.value;
+  const filterValue = columnFilters.find(i => i.id === value)?.value;
   const filters = getFilter(filterValue);
   const [input, setInput] = useState<string | null>(filters);
 
@@ -49,7 +47,7 @@ export function DataTableFilterInput<TData>({
         name={value}
         id={value}
         value={input || ""}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={e => setInput(e.target.value)}
       />
     </div>
   );

@@ -62,8 +62,10 @@ export function DataTable<TData, TValue>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [columnVisibility, setColumnVisibility] =
-    useLocalStorage<VisibilityState>("data-table-visibility", {});
+  const [columnVisibility, setColumnVisibility] = useLocalStorage<VisibilityState>(
+    "data-table-visibility",
+    {}
+  );
   const [_, setSearch] = useQueryStates(searchParamsParser);
 
   const table = useReactTable({
@@ -81,8 +83,8 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
     // REMINDER: it doesn't support array of strings (WARNING: might not work for other types)
-    getFacetedUniqueValues: (table: TTable<TData>, columnId: string) => () => {
-      const facets = getFacetedUniqueValues<TData>()(table, columnId)();
+    getFacetedUniqueValues: (tbl: TTable<TData>, columnId: string) => () => {
+      const facets = getFacetedUniqueValues<TData>()(tbl, columnId)();
       const customFacets = new Map();
       for (const [key, value] of facets as any) {
         if (Array.isArray(key)) {
@@ -100,10 +102,8 @@ export function DataTable<TData, TValue>({
   });
 
   React.useEffect(() => {
-    const columnFiltersWithNullable = filterFields.map((field) => {
-      const filterValue = columnFilters.find(
-        (filter) => filter.id === field.value,
-      );
+    const columnFiltersWithNullable = filterFields.map(field => {
+      const filterValue = columnFilters.find(filter => filter.id === field.value);
       if (!filterValue) return { id: field.value, value: null };
       return { id: field.value, value: filterValue.value };
     });
@@ -113,7 +113,7 @@ export function DataTable<TData, TValue>({
         prev[curr.id as string] = curr.value;
         return prev;
       },
-      {} as Record<string, unknown>,
+      {} as Record<string, unknown>
     );
 
     setSearch(search);
@@ -133,7 +133,7 @@ export function DataTable<TData, TValue>({
         <div
           className={cn(
             "hidden w-full p-1 sm:block sm:max-w-52 sm:min-w-52 sm:self-start md:max-w-64 md:min-w-64",
-            "group-data-[expanded=false]/controls:hidden",
+            "group-data-[expanded=false]/controls:hidden"
           )}
         >
           <DataTableFilterControls />
@@ -144,20 +144,14 @@ export function DataTable<TData, TValue>({
           <div className="rounded-md border">
             <Table>
               <TableHeader className="bg-muted/50">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow
-                    key={headerGroup.id}
-                    className="hover:bg-transparent"
-                  >
-                    {headerGroup.headers.map((header) => {
+                {table.getHeaderGroups().map(headerGroup => (
+                  <TableRow key={headerGroup.id} className="hover:bg-transparent">
+                    {headerGroup.headers.map(header => {
                       return (
                         <TableHead key={header.id}>
                           {header.isPlaceholder
                             ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
+                            : flexRender(header.column.columnDef.header, header.getContext())}
                         </TableHead>
                       );
                     })}
@@ -166,27 +160,18 @@ export function DataTable<TData, TValue>({
               </TableHeader>
               <TableBody>
                 {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
+                  table.getRowModel().rows.map(row => (
+                    <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                      {row.getVisibleCells().map(cell => (
                         <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </TableCell>
                       ))}
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
+                    <TableCell colSpan={columns.length} className="h-24 text-center">
                       No results.
                     </TableCell>
                   </TableRow>

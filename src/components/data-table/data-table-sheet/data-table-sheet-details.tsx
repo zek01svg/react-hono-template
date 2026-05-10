@@ -40,23 +40,19 @@ export function DataTableSheetDetails({
 
   const selectedRow = React.useMemo(() => {
     if (isLoading && !selectedRowKey) return;
-    return table
-      .getCoreRowModel()
-      .flatRows.find((row) => row.id === selectedRowKey);
+    return table.getCoreRowModel().flatRows.find(row => row.id === selectedRowKey);
   }, [selectedRowKey, isLoading]);
 
-  const index = table
-    .getCoreRowModel()
-    .flatRows.findIndex((row) => row.id === selectedRow?.id);
+  const index = table.getCoreRowModel().flatRows.findIndex(row => row.id === selectedRow?.id);
 
   const nextId = React.useMemo(
     () => table.getCoreRowModel().flatRows[index + 1]?.id,
-    [index, isLoading],
+    [index, isLoading]
   );
 
   const prevId = React.useMemo(
     () => table.getCoreRowModel().flatRows[index - 1]?.id,
-    [index, isLoading],
+    [index, isLoading]
   );
 
   const onPrev = React.useCallback(() => {
@@ -97,9 +93,7 @@ export function DataTableSheetDetails({
       onOpenChange={() => {
         // REMINDER: focus back to the row that was selected
         // We need to manually focus back due to missing Trigger component
-        const el = selectedRowKey
-          ? document.querySelector(`#${selectedRowKey}`)
-          : null;
+        const el = selectedRowKey ? document.querySelector(`#${selectedRowKey}`) : null;
         table.resetRowSelection();
 
         // REMINDER: when navigating between tabs in the sheet and exit the sheet, the tab gets lost
@@ -115,11 +109,7 @@ export function DataTableSheetDetails({
         <SheetHeader className="bg-background sticky top-0 z-10 border-b p-4">
           <div className="flex items-center justify-between gap-2">
             <SheetTitle className={cn(titleClassName, "truncate text-left")}>
-              {isLoading && !selectedRowKey ? (
-                <Skeleton className="h-7 w-36" />
-              ) : (
-                title
-              )}
+              {isLoading && !selectedRowKey ? <Skeleton className="h-7 w-36" /> : title}
             </SheetTitle>
             <div className="flex h-7 items-center gap-1">
               <TooltipProvider>
@@ -174,9 +164,7 @@ export function DataTableSheetDetails({
             </div>
           </div>
         </SheetHeader>
-        <SheetDescription className="sr-only">
-          Selected row details
-        </SheetDescription>
+        <SheetDescription className="sr-only">Selected row details</SheetDescription>
         <div className="p-4">{children}</div>
       </SheetContent>
     </Sheet>

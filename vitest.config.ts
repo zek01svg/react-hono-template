@@ -23,7 +23,7 @@ const uiConfig = mergeConfig(
     test: {
       environment: "jsdom",
     },
-  }),
+  })
 );
 
 export default uiConfig;
