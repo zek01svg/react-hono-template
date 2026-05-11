@@ -4,10 +4,15 @@ import { z } from "zod";
 export const env = createEnv({
   client: {
     VITE_APP_URL: z.url(),
+    VITE_SENTRY_DSN: z.url().optional(),
+    VITE_SENTRY_ORG: z.string().min(1).optional(),
+    VITE_SENTRY_PROJECT: z.string().min(1).optional(),
   },
   server: {
     NODE_ENV: z.enum(["development", "production"]).default("development"),
     DATABASE_URL: z.url(),
+    SENTRY_DSN: z.url().optional(),
+    SENTRY_AUTH_TOKEN: z.string().min(1).optional(),
 
     // Better Auth
     BETTER_AUTH_SECRET: z.string(),
@@ -32,7 +37,12 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     VITE_APP_URL: process.env.VITE_APP_URL ?? `http://localhost:4000`,
+    VITE_SENTRY_DSN: process.env.VITE_SENTRY_DSN,
+    VITE_SENTRY_ORG: process.env.VITE_SENTRY_ORG,
+    VITE_SENTRY_PROJECT: process.env.VITE_SENTRY_PROJECT,
     DATABASE_URL: process.env.DATABASE_URL,
+    SENTRY_DSN: process.env.SENTRY_DSN,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
 
     // Better Auth
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
@@ -57,5 +67,5 @@ export const env = createEnv({
 });
 
 export type Env = {
-  [K in keyof typeof env as K extends `VITE_${string}` ? K : never]: string;
+  [K in keyof typeof env as K extends `VITE_${string}` ? K : never]: (typeof env)[K];
 };

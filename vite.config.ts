@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import tanstackRouter from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
@@ -9,6 +10,16 @@ import path from "path";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
+  const sentryAuthToken = env.SENTRY_AUTH_TOKEN;
+  const sentryOrg = env.VITE_SENTRY_ORG;
+  const sentryProject = env.VITE_SENTRY_PROJECT;
+  const shouldUploadSourcemaps =
+    mode === "production" && Boolean(sentryAuthToken && sentryOrg && sentryProject);
+
+  const clientEnv = Object.fromEntries(
+    Object.entries(env).filter(([key]) => key.startsWith("VITE_"))
+  );
+
   return {
     plugins: [
       tanstackRouter({
@@ -16,6 +27,19 @@ export default defineConfig(({ mode }) => {
       }),
       react(),
       tailwindcss(),
+      ...(shouldUploadSourcemaps
+        ? [
+            sentryVitePlugin({
+              authToken: sentryAuthToken,
+              org: sentryOrg,
+              project: sentryProject,
+              telemetry: false,
+              sourcemaps: {
+                assets: ["./dist/**/*"],
+              },
+            }),
+          ]
+        : []),
     ],
     resolve: {
       alias: {
@@ -36,11 +60,12 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       process: {
-        env: env,
+        env: clientEnv,
       },
     },
     build: {
       outDir: "dist/static",
+      sourcemap: true,
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, "index.html"),

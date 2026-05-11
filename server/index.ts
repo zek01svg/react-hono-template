@@ -1,11 +1,66 @@
 import { env } from "#server/env.ts";
 import { auth } from "#server/lib/auth.ts";
+import { configureAppLogging, getAppLogger } from "#shared/logger.ts";
 import { Scalar } from "@scalar/hono-api-reference";
+import * as Sentry from "@sentry/bun";
 import { Hono } from "hono";
 import { describeRoute, openAPIRouteHandler } from "hono-openapi";
 import { serveStatic } from "hono/bun";
 
+const sentryDsn = env.SENTRY_DSN ?? env.VITE_SENTRY_DSN;
+if (sentryDsn) {
+  Sentry.init({
+    dsn: sentryDsn,
+    environment: env.NODE_ENV,
+    tracesSampleRate: env.NODE_ENV === "development" ? 1 : 0.2,
+    integrations: [Sentry.honoIntegration()],
+  });
+}
+
+configureAppLogging({
+  runtime: "server",
+  isDevelopment: env.NODE_ENV === "development",
+  enableSentrySink: Boolean(sentryDsn),
+});
+
+const logger = getAppLogger("server", "http");
 const app = new Hono();
+Sentry.setupHonoErrorHandler(app);
+
+app.use(async (c, next) => {
+  const requestName = `${c.req.method} ${c.req.path}`;
+  const startTime = performance.now();
+
+  if (sentryDsn) {
+    return Sentry.startSpan(
+      {
+        op: "http.server",
+        name: requestName,
+      },
+      async () => {
+        await next();
+        const activeSpan = Sentry.getActiveSpan();
+        const span = activeSpan ? Sentry.spanToJSON(activeSpan) : undefined;
+        logger.info("request.completed", {
+          method: c.req.method,
+          path: c.req.path,
+          status: c.res.status,
+          durationMs: Math.round((performance.now() - startTime) * 100) / 100,
+          trace_id: span?.trace_id,
+          span_id: span?.span_id,
+        });
+      }
+    );
+  }
+
+  await next();
+  logger.info("request.completed", {
+    method: c.req.method,
+    path: c.req.path,
+    status: c.res.status,
+    durationMs: Math.round((performance.now() - startTime) * 100) / 100,
+  });
+});
 
 const baseRoutes = new Hono()
   .get(
@@ -82,6 +137,11 @@ app.route("/", baseRoutes);
 
 app.onError((err, c) => {
   if (err instanceof Error && err.name === "ValidationError") {
+    logger.warning("request.validation_failed", {
+      path: c.req.path,
+      method: c.req.method,
+      details: err.message,
+    });
     return c.json(
       {
         error: "Validation failed",
@@ -90,7 +150,11 @@ app.onError((err, c) => {
       400
     );
   }
-  console.error(err);
+
+  logger.error("request.unhandled_error", err);
+  if (sentryDsn) {
+    Sentry.captureException(err);
+  }
   return c.json(
     {
       error: "Internal Server Error",
@@ -105,6 +169,9 @@ const server = {
   fetch: app.fetch,
 };
 
-console.log(`App is running on port 4001`);
+getAppLogger("server", "bootstrap").info("server.started", {
+  port: server.port,
+  sentryEnabled: Boolean(sentryDsn),
+});
 
 export default server;
