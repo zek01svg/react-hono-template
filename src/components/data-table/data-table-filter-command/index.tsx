@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { formatDistanceToNow } from "date-fns";
-import { LoaderCircle, Search, X } from "lucide-react";
-import { ParserBuilder } from "nuqs";
-
 import type { DataTableFilterField } from "../types";
+import type { ParserBuilder } from "nuqs";
+
 import { Kbd } from "#client/components/custom/kbd";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import {
@@ -22,6 +19,10 @@ import { useHotKey } from "#client/hooks/use-hot-key";
 import { useLocalStorage } from "#client/hooks/use-local-storage";
 import { formatCompactNumber } from "#client/lib/format";
 import { cn } from "#client/lib/utils";
+import { formatDistanceToNow } from "date-fns";
+import { LoaderCircle, Search, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
 import {
   columnFiltersParser,
   getFieldOptions,
@@ -37,30 +38,21 @@ interface DataTableFilterCommandProps {
   searchParamsParser: Record<string, ParserBuilder<any>>;
 }
 
-export function DataTableFilterCommand({
-  searchParamsParser,
-}: DataTableFilterCommandProps) {
-  const {
-    table,
-    isLoading,
-    filterFields: _filterFields,
-    getFacetedUniqueValues,
-  } = useDataTable();
+export function DataTableFilterCommand({ searchParamsParser }: DataTableFilterCommandProps) {
+  const { table, isLoading, filterFields: _filterFields, getFacetedUniqueValues } = useDataTable();
   const columnFilters = table.getState().columnFilters;
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [currentWord, setCurrentWord] = useState<string>("");
   const filterFields = useMemo(
-    () => _filterFields?.filter((i) => !i.commandDisabled),
-    [_filterFields],
+    () => _filterFields?.filter(i => !i.commandDisabled),
+    [_filterFields]
   );
   const columnParser = useMemo(
     () => columnFiltersParser({ searchParamsParser, filterFields }),
-    [searchParamsParser, filterFields],
+    [searchParamsParser, filterFields]
   );
-  const [inputValue, setInputValue] = useState<string>(
-    columnParser.serialize(columnFilters),
-  );
+  const [inputValue, setInputValue] = useState<string>(columnParser.serialize(columnFilters));
   const [lastSearches, setLastSearches] = useLocalStorage<
     {
       search: string;
@@ -79,20 +71,16 @@ export function DataTableFilterCommand({
     const searchParams = columnParser.parse(inputValue);
 
     const currentFilters = table.getState().columnFilters;
-    const currentEnabledFilters = currentFilters.filter((filter) => {
-      const field = _filterFields?.find((field) => field.value === filter.id);
-      return !field?.commandDisabled;
-    });
-    const currentDisabledFilters = currentFilters.filter((filter) => {
-      const field = _filterFields?.find((field) => field.value === filter.id);
-      return field?.commandDisabled;
+    const currentEnabledFilters = currentFilters.filter(filter => {
+      const matchedField = _filterFields?.find(f => f.value === filter.id);
+      return !matchedField?.commandDisabled;
     });
 
     for (const key of Object.keys(searchParams)) {
       const value = searchParams[key as keyof typeof searchParams];
       table.getColumn(key)?.setFilterValue(value);
     }
-    const currentFiltersToReset = currentEnabledFilters.filter((filter) => {
+    const currentFiltersToReset = currentEnabledFilters.filter(filter => {
       return !(filter.id in searchParams);
     });
     for (const filter of currentFiltersToReset) {
@@ -109,7 +97,7 @@ export function DataTableFilterCommand({
     }
   }, [columnFilters, filterFields, open]);
 
-  useHotKey(() => setOpen((open) => !open), "k");
+  useHotKey(() => setOpen(prev => !prev), "k");
 
   useEffect(() => {
     if (open) {
@@ -123,7 +111,7 @@ export function DataTableFilterCommand({
         type="button"
         className={cn(
           "group border-input bg-background text-muted-foreground ring-offset-background focus-within:ring-ring hover:bg-accent/50 hover:text-accent-foreground flex w-full items-center rounded-lg border px-3 focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-none",
-          open ? "hidden" : "visible",
+          open ? "hidden" : "visible"
         )}
         onClick={() => setOpen(true)}
       >
@@ -147,7 +135,7 @@ export function DataTableFilterCommand({
       <Command
         className={cn(
           "border-border dark:bg-muted/50 overflow-visible rounded-lg border shadow-md [&>div]:border-none",
-          open ? "visible" : "hidden",
+          open ? "visible" : "hidden"
         )}
         filter={(value, search, keywords) =>
           getFilterValue({ value, search, keywords, currentWord })
@@ -158,7 +146,7 @@ export function DataTableFilterCommand({
           ref={inputRef}
           value={inputValue}
           onValueChange={setInputValue}
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.key === "Escape") inputRef?.current?.blur();
           }}
           onBlur={() => {
@@ -169,9 +157,7 @@ export function DataTableFilterCommand({
             const search = inputValue.trim();
             if (!search) return;
             const timestamp = Date.now();
-            const searchIndex = lastSearches.findIndex(
-              (item) => item.search === search,
-            );
+            const searchIndex = lastSearches.findIndex(item => item.search === search);
             if (searchIndex !== -1) {
               lastSearches[searchIndex].timestamp = timestamp;
               setLastSearches(lastSearches);
@@ -180,7 +166,7 @@ export function DataTableFilterCommand({
             setLastSearches([...lastSearches, { search, timestamp }]);
             return;
           }}
-          onInput={(e) => {
+          onInput={e => {
             const caretPosition = e.currentTarget?.selectionStart || -1;
             const value = e.currentTarget?.value || "";
             const word = getWordByCaretPosition({ value, caretPosition });
@@ -194,7 +180,7 @@ export function DataTableFilterCommand({
             {/* default height is 300px but in case of more, we'd like to tease the user */}
             <CommandList className="max-h-[310px]">
               <CommandGroup heading="Filter">
-                {filterFields.map((field) => {
+                {filterFields.map(field => {
                   if (typeof field.value !== "string") return null;
                   if (inputValue.includes(`${field.value}:`)) return null;
                   // TBD: should we handle this in the component?
@@ -202,12 +188,12 @@ export function DataTableFilterCommand({
                     <CommandItem
                       key={field.value}
                       value={field.value}
-                      onMouseDown={(e) => {
+                      onMouseDown={e => {
                         e.preventDefault();
                         e.stopPropagation();
                       }}
-                      onSelect={(value) => {
-                        setInputValue((prev) => {
+                      onSelect={value => {
+                        setInputValue(prev => {
                           if (currentWord.trim() === "") {
                             const input = `${prev}${value}`;
                             return `${input}:`;
@@ -217,7 +203,7 @@ export function DataTableFilterCommand({
                           const prefix = isStarting ? "" : " ";
                           const input = prev.replace(
                             `${prefix}${currentWord}`,
-                            `${prefix}${value}`,
+                            `${prefix}${value}`
                           );
                           return `${input}:`;
                         });
@@ -233,7 +219,7 @@ export function DataTableFilterCommand({
               </CommandGroup>
               <CommandSeparator />
               <CommandGroup heading="Query">
-                {filterFields?.map((field) => {
+                {filterFields?.map(field => {
                   if (typeof field.value !== "string") return null;
                   if (!currentWord.includes(`${field.value}:`)) return null;
 
@@ -244,24 +230,24 @@ export function DataTableFilterCommand({
 
                   const options = getFieldOptions({ field });
 
-                  return options.map((optionValue) => {
+                  return options.map(optionValue => {
                     return (
                       <CommandItem
                         key={`${String(field.value)}:${optionValue}`}
                         value={`${String(field.value)}:${optionValue}`}
-                        onMouseDown={(e) => {
+                        onMouseDown={e => {
                           e.preventDefault();
                           e.stopPropagation();
                         }}
-                        onSelect={(value) => {
-                          setInputValue((prev) =>
+                        onSelect={value => {
+                          setInputValue(prev =>
                             replaceInputByFieldType({
                               prev,
                               currentWord,
                               optionValue,
                               value,
                               field,
-                            }),
+                            })
                           );
                           setCurrentWord("");
                         }}
@@ -269,9 +255,7 @@ export function DataTableFilterCommand({
                         {`${optionValue}`}
                         {facetedValue?.has(optionValue) ? (
                           <span className="text-muted-foreground ml-auto font-mono">
-                            {formatCompactNumber(
-                              facetedValue.get(optionValue) || 0,
-                            )}
+                            {formatCompactNumber(facetedValue.get(optionValue) || 0)}
                           </span>
                         ) : null}
                       </CommandItem>
@@ -282,18 +266,18 @@ export function DataTableFilterCommand({
               <CommandSeparator />
               <CommandGroup heading="Suggestions">
                 {lastSearches
-                  ?.sort((a, b) => b.timestamp - a.timestamp)
+                  ?.toSorted((a, b) => b.timestamp - a.timestamp)
                   .slice(0, 5)
-                  .map((item) => {
+                  .map(item => {
                     return (
                       <CommandItem
                         key={`suggestion:${item.search}`}
                         value={`suggestion:${item.search}`}
-                        onMouseDown={(e) => {
+                        onMouseDown={e => {
                           e.preventDefault();
                           e.stopPropagation();
                         }}
-                        onSelect={(value) => {
+                        onSelect={value => {
                           const search = value.replace("suggestion:", "");
                           setInputValue(`${search} `);
                           setCurrentWord("");
@@ -308,19 +292,15 @@ export function DataTableFilterCommand({
                         </span>
                         <button
                           type="button"
-                          onMouseDown={(e) => {
+                          onMouseDown={e => {
                             e.preventDefault();
                             e.stopPropagation();
                           }}
-                          onClick={(e) => {
+                          onClick={e => {
                             e.preventDefault();
                             e.stopPropagation();
                             // TODO: extract into function
-                            setLastSearches(
-                              lastSearches.filter(
-                                (i) => i.search !== item.search,
-                              ),
-                            );
+                            setLastSearches(lastSearches.filter(i => i.search !== item.search));
                           }}
                           className="hover:bg-background ml-1 hidden rounded-md p-0.5 group-aria-[selected=true]:block"
                         >
@@ -338,8 +318,7 @@ export function DataTableFilterCommand({
             >
               <div className="flex flex-wrap gap-3">
                 <span>
-                  Use <Kbd variant="outline">↑</Kbd>{" "}
-                  <Kbd variant="outline">↓</Kbd> to navigate
+                  Use <Kbd variant="outline">↑</Kbd> <Kbd variant="outline">↓</Kbd> to navigate
                 </span>
                 <span>
                   <Kbd variant="outline">Enter</Kbd> to query
@@ -355,11 +334,11 @@ export function DataTableFilterCommand({
                   Range: <Kbd variant="outline">p95:59-340</Kbd>
                 </span>
               </div>
-              {lastSearches.length ? (
+              {lastSearches.length > 0 ? (
                 <button
                   type="button"
                   className="text-muted-foreground hover:text-accent-foreground"
-                  onMouseDown={(e) => {
+                  onMouseDown={e => {
                     e.preventDefault();
                     e.stopPropagation();
                   }}
@@ -378,13 +357,8 @@ export function DataTableFilterCommand({
 
 // function CommandItemType<TData>
 
-function CommandItemSuggestions<TData>({
-  field,
-}: {
-  field: DataTableFilterField<TData>;
-}) {
-  const { table, getFacetedMinMaxValues, getFacetedUniqueValues } =
-    useDataTable();
+function CommandItemSuggestions<TData>({ field }: { field: DataTableFilterField<TData> }) {
+  const { table, getFacetedMinMaxValues, getFacetedUniqueValues } = useDataTable();
   const value = field.value as string;
   switch (field.type) {
     case "checkbox": {
@@ -392,17 +366,14 @@ function CommandItemSuggestions<TData>({
         <span className="text-muted-foreground/80 ml-1 hidden truncate group-aria-[selected=true]:block">
           {getFacetedUniqueValues
             ? Array.from(getFacetedUniqueValues(table, value)?.keys() || [])
-                .map((value) => `[${value}]`)
+                .map(v => `[${v}]`)
                 .join(" ")
-            : field.options?.map(({ value }) => `[${value}]`).join(" ")}
+            : field.options?.map(({ value: optValue }) => `[${optValue}]`).join(" ")}
         </span>
       );
     }
     case "slider": {
-      const [min, max] = getFacetedMinMaxValues?.(table, value) || [
-        field.min,
-        field.max,
-      ];
+      const [min, max] = getFacetedMinMaxValues?.(table, value) || [field.min, field.max];
       return (
         <span className="text-muted-foreground/80 ml-1 hidden truncate group-aria-[selected=true]:block">
           [{min} - {max}]

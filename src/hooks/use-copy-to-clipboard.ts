@@ -6,20 +6,19 @@ export function useCopyToClipboard() {
 
   const copy = useCallback(
     async (
-      text: string,
+      value: string,
       { timeout, withToast }: { timeout?: number; withToast?: boolean } = {
         timeout: 3000,
         withToast: false,
       }
     ) => {
       if (!navigator?.clipboard) {
-        console.warn("Clipboard not supported");
         return false;
       }
 
       try {
-        await navigator.clipboard.writeText(text);
-        setText(text);
+        await navigator.clipboard.writeText(value);
+        setText(value);
 
         if (timeout) {
           setTimeout(() => {
@@ -32,8 +31,7 @@ export function useCopyToClipboard() {
         }
 
         return true;
-      } catch (error) {
-        console.warn("Copy failed", error);
+      } catch {
         setText(null);
         return false;
       }

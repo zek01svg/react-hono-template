@@ -1,7 +1,5 @@
 "use client";
 
-import { X } from "lucide-react";
-
 import { Kbd } from "#client/components/custom/kbd";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import {
@@ -11,6 +9,8 @@ import {
   TooltipTrigger,
 } from "#client/components/ui/tooltip";
 import { useHotKey } from "#client/hooks/use-hot-key";
+import { X } from "lucide-react";
+
 import { Button } from "../ui/button";
 
 export function DataTableResetButton() {
@@ -21,11 +21,7 @@ export function DataTableResetButton() {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => table.resetColumnFilters()}
-          >
+          <Button variant="ghost" size="sm" onClick={() => table.resetColumnFilters()}>
             <X className="mr-2 h-4 w-4" />
             Reset
           </Button>

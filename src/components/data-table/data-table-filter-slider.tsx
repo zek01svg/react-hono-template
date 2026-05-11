@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import type { DataTableSliderFilterField } from "./types";
+
 import { InputWithAddons } from "#client/components/custom/input-with-addons";
 import { Slider } from "#client/components/custom/slider";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Label } from "#client/components/ui/label";
 import { useDebounce } from "#client/hooks/use-debounce";
 import { isArrayOfNumbers } from "#client/lib/is-array";
+import { useEffect, useState } from "react";
 
 function getFilter(filterValue: unknown) {
   return typeof filterValue === "number"
@@ -29,7 +29,7 @@ export function DataTableFilterSlider<TData>({
   const value = _value as string;
   const { table, columnFilters, getFacetedMinMaxValues } = useDataTable();
   const column = table.getColumn(value);
-  const filterValue = columnFilters.find((i) => i.id === value)?.value;
+  const filterValue = columnFilters.find(i => i.id === value)?.value;
   const filters = getFilter(filterValue);
   const [input, setInput] = useState<number[] | null>(filters);
   const [min, max] = getFacetedMinMaxValues?.(table, value) ||
@@ -47,10 +47,7 @@ export function DataTableFilterSlider<TData>({
     if (debouncedInput?.length !== 2) {
     } else if (!filters) {
       setInput(null);
-    } else if (
-      debouncedInput[0] !== filters[0] ||
-      debouncedInput[1] !== filters[1]
-    ) {
+    } else if (debouncedInput[0] !== filters[0] || debouncedInput[1] !== filters[1]) {
       setInput(filters);
     }
   }, [filters]);
@@ -59,10 +56,7 @@ export function DataTableFilterSlider<TData>({
     <div className="grid gap-2">
       <div className="flex items-center gap-4">
         <div className="grid w-full gap-1.5">
-          <Label
-            htmlFor={`min-${value}`}
-            className="text-muted-foreground px-2"
-          >
+          <Label htmlFor={`min-${value}`} className="text-muted-foreground px-2">
             Min.
           </Label>
           <InputWithAddons
@@ -75,16 +69,11 @@ export function DataTableFilterSlider<TData>({
             value={`${input?.[0] ?? min}`}
             min={min}
             max={max}
-            onChange={(e) =>
-              setInput((prev) => [Number(e.target.value), prev?.[1] || max])
-            }
+            onChange={e => setInput(prev => [Number(e.target.value), prev?.[1] || max])}
           />
         </div>
         <div className="grid w-full gap-1.5">
-          <Label
-            htmlFor={`max-${value}`}
-            className="text-muted-foreground px-2"
-          >
+          <Label htmlFor={`max-${value}`} className="text-muted-foreground px-2">
             Max.
           </Label>
           <InputWithAddons
@@ -97,9 +86,7 @@ export function DataTableFilterSlider<TData>({
             value={`${input?.[1] ?? max}`}
             min={min}
             max={max}
-            onChange={(e) =>
-              setInput((prev) => [prev?.[0] || min, Number(e.target.value)])
-            }
+            onChange={e => setInput(prev => [prev?.[0] || min, Number(e.target.value)])}
           />
         </div>
       </div>
@@ -107,7 +94,7 @@ export function DataTableFilterSlider<TData>({
         min={min}
         max={max}
         value={input?.length === 2 ? input : [min, max]}
-        onValueChange={(values) => setInput(values)}
+        onValueChange={values => setInput(values)}
       />
     </div>
   );

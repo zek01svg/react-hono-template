@@ -1,5 +1,6 @@
-import { subDays, subHours, subMinutes } from "date-fns";
 import type { ColumnSchema } from "./types";
+
+import { subDays, subHours, subMinutes } from "date-fns";
 
 export const data = [
   {

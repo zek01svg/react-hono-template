@@ -1,13 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
-
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Button } from "#client/components/ui/button";
 import {
@@ -17,13 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "#client/components/ui/select";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { useMemo } from "react";
 
 export function DataTablePagination() {
   const { table, pagination, columnFilters } = useDataTable();
-  const pageCount = useMemo(
-    () => table.getPageCount(),
-    [columnFilters, pagination.pageSize],
-  );
+  const pageCount = useMemo(() => table.getPageCount(), [columnFilters, pagination.pageSize]);
 
   return (
     <div className="flex items-center justify-end space-x-4 md:space-x-6 lg:space-x-8">
@@ -31,7 +22,7 @@ export function DataTablePagination() {
         <p className="text-sm font-medium">Rows per page</p>
         <Select
           value={`${pagination.pageSize}`}
-          onValueChange={(value) => {
+          onValueChange={value => {
             table.setPageSize(Number(value));
           }}
         >
@@ -39,7 +30,7 @@ export function DataTablePagination() {
             <SelectValue placeholder={pagination.pageSize} />
           </SelectTrigger>
           <SelectContent side="top">
-            {[10, 20, 30, 40, 50].map((pageSize) => (
+            {[10, 20, 30, 40, 50].map(pageSize => (
               <SelectItem key={pageSize} value={`${pageSize}`}>
                 {pageSize}
               </SelectItem>

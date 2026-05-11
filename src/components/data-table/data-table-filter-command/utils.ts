@@ -1,12 +1,8 @@
-import { ColumnFiltersState } from "@tanstack/react-table";
-import { ParserBuilder } from "nuqs";
-
 import type { DataTableFilterField } from "../types";
-import {
-  ARRAY_DELIMITER,
-  RANGE_DELIMITER,
-  SLIDER_DELIMITER,
-} from "#client/lib/delimiters";
+import type { ColumnFiltersState } from "@tanstack/react-table";
+import type { ParserBuilder } from "nuqs";
+
+import { ARRAY_DELIMITER, RANGE_DELIMITER, SLIDER_DELIMITER } from "#client/lib/delimiters";
 import { isArrayOfDates } from "#client/lib/is-array";
 
 /**
@@ -80,22 +76,15 @@ export function replaceInputByFieldType<TData>({
   }
 }
 
-export function getFieldOptions<TData>({
-  field,
-}: {
-  field: DataTableFilterField<TData>;
-}) {
+export function getFieldOptions<TData>({ field }: { field: DataTableFilterField<TData> }) {
   switch (field.type) {
     case "slider": {
       return field.options?.length
         ? field.options
             .map(({ value }) => value)
-            .sort((a, b) => Number(a) - Number(b))
+            .toSorted((a, b) => Number(a) - Number(b))
             .filter(notEmpty)
-        : Array.from(
-            { length: field.max - field.min + 1 },
-            (_, i) => field.min + i,
-          ) || [];
+        : Array.from({ length: field.max - field.min + 1 }, (_, i) => field.min + i) || [];
     }
     default: {
       return field.options?.map(({ value }) => value).filter(notEmpty) || [];
@@ -139,11 +128,8 @@ export function getFilterValue({
        */
       const queries = query.split(ARRAY_DELIMITER);
       const rawValue = value.toLowerCase().replace(`${filter}:`, "");
-      if (
-        queries.some((item, i) => item === rawValue && i !== queries.length - 1)
-      )
-        return 0;
-      if (queries.some((item) => rawValue.includes(item))) return 1;
+      if (queries.some((item, i) => item === rawValue && i !== queries.length - 1)) return 0;
+      if (queries.some(item => rawValue.includes(item))) return 1;
     }
     if (query.includes(SLIDER_DELIMITER)) {
       /**
@@ -197,7 +183,7 @@ export function getFieldValueByType<TData>({
     case "timerange": {
       if (Array.isArray(value)) {
         if (isArrayOfDates(value)) {
-          return value.map((date) => date.getTime()).join(RANGE_DELIMITER);
+          return value.map(date => date.getTime()).join(RANGE_DELIMITER);
         }
         return value.join(RANGE_DELIMITER);
       }
@@ -212,9 +198,7 @@ export function getFieldValueByType<TData>({
   }
 }
 
-export function notEmpty<TValue>(
-  value: TValue | null | undefined,
-): value is TValue {
+export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined;
 }
 
@@ -237,7 +221,7 @@ export function columnFiltersParser<TData>({
             prev[name] = value;
             return prev;
           },
-          {} as Record<string, string>,
+          {} as Record<string, string>
         );
 
       const searchParams = Object.entries(values).reduce(
@@ -248,16 +232,16 @@ export function columnFiltersParser<TData>({
           prev[key] = parser.parse(value);
           return prev;
         },
-        {} as Record<string, unknown>,
+        {} as Record<string, unknown>
       );
 
       return searchParams;
     },
     serialize: (columnFilters: ColumnFiltersState) => {
       const values = columnFilters.reduce((prev, curr) => {
-        const { commandDisabled } = filterFields?.find(
-          (field) => curr.id === field.value,
-        ) || { commandDisabled: true }; // if column filter is not found, disable the command by default
+        const { commandDisabled } = filterFields?.find(field => curr.id === field.value) || {
+          commandDisabled: true,
+        }; // if column filter is not found, disable the command by default
         const parser = searchParamsParser[curr.id];
 
         if (commandDisabled || !parser) return prev;

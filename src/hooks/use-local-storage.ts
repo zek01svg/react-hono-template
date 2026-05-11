@@ -24,8 +24,8 @@ export function useLocalStorage<T>(
   }, [key]);
 
   const setValue: React.Dispatch<React.SetStateAction<T>> = useCallback(
-    (value) => {
-      if (value instanceof Function) {
+    value => {
+      if (typeof value === "function") {
         setStoredValue((prev: T) => {
           const newValue = value(prev);
           // Save to localStorage

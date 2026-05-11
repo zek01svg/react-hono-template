@@ -1,9 +1,9 @@
-import type { Column } from "@tanstack/react-table";
 import type { ButtonProps } from "#client/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import type { Column } from "@tanstack/react-table";
 
 import { Button } from "#client/components/ui/button";
 import { cn } from "#client/lib/utils";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface DataTableColumnHeaderProps<TData, TValue> extends ButtonProps {
   column: Column<TData, TValue>;
@@ -25,11 +25,11 @@ export function DataTableColumnHeader<TData, TValue>({
       variant="ghost"
       size="sm"
       onClick={() => {
-        column.toggleSorting(undefined);
+        column.toggleSorting();
       }}
       className={cn(
         "flex h-7 w-full items-center justify-between gap-2 px-0 py-0 hover:bg-transparent",
-        className,
+        className
       )}
       {...props}
     >
@@ -38,17 +38,13 @@ export function DataTableColumnHeader<TData, TValue>({
         <ChevronUp
           className={cn(
             "-mb-0.5 h-3 w-3",
-            column.getIsSorted() === "asc"
-              ? "text-accent-foreground"
-              : "text-muted-foreground",
+            column.getIsSorted() === "asc" ? "text-accent-foreground" : "text-muted-foreground"
           )}
         />
         <ChevronDown
           className={cn(
             "-mt-0.5 h-3 w-3",
-            column.getIsSorted() === "desc"
-              ? "text-accent-foreground"
-              : "text-muted-foreground",
+            column.getIsSorted() === "desc" ? "text-accent-foreground" : "text-muted-foreground"
           )}
         />
       </span>

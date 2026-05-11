@@ -1,14 +1,14 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
-import { tagColor } from "#shared/constants/tag";
-import { format, isSameDay } from "date-fns";
-import { Check, Minus } from "lucide-react";
-
 import type { ColumnSchema } from "./types";
+import type { ColumnDef } from "@tanstack/react-table";
+
 import { DataTableColumnHeader } from "#client/components/data-table/data-table-column-header";
 import { Badge } from "#client/components/ui/badge";
 import { isArrayOfDates, isArrayOfNumbers } from "#client/lib/is-array";
+import { tagColor } from "#shared/constants/tag";
+import { format, isSameDay } from "date-fns";
+import { Check, Minus } from "lucide-react";
 
 export const columns: ColumnDef<ColumnSchema>[] = [
   {
@@ -38,7 +38,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       const array = row.getValue(id) as string[];
       if (typeof value === "string") return array.includes(value);
       // up to the user to define either `.some` or `.every`
-      if (Array.isArray(value)) return value.some((i) => array.includes(i));
+      if (Array.isArray(value)) return value.some(i => array.includes(i));
       return false;
     },
   },
@@ -50,7 +50,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       if (Array.isArray(value)) {
         return (
           <div className="flex flex-wrap gap-1">
-            {value.map((v) => (
+            {value.map(v => (
               <Badge key={v} className={tagColor[v].badge}>
                 {v}
               </Badge>
@@ -64,18 +64,16 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       const array = row.getValue(id) as string[];
       if (typeof value === "string") return array.includes(value);
       // up to the user to define either `.some` or `.every`
-      if (Array.isArray(value)) return value.some((i) => array.includes(i));
+      if (Array.isArray(value)) return value.some(i => array.includes(i));
       return false;
     },
   },
   {
     accessorKey: "p95",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="P95" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="P95" />,
     cell: ({ row }) => {
       const value = row.getValue("p95");
-      if (typeof value === "undefined") {
+      if (value === undefined) {
         return <Minus className="text-muted-foreground/50 h-4 w-4" />;
       }
       return (
@@ -90,10 +88,9 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       if (Array.isArray(value) && isArrayOfNumbers(value)) {
         if (value.length === 1) {
           return value[0] === rowValue;
-        } else {
-          const sorted = value.sort((a, b) => a - b);
-          return sorted[0] <= rowValue && rowValue <= sorted[1];
         }
+        const sorted = value.toSorted((a, b) => a - b);
+        return sorted[0] <= rowValue && rowValue <= sorted[1];
       }
       return false;
     },
@@ -132,9 +129,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
   },
   {
     accessorKey: "date",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
     cell: ({ row }) => {
       const value = row.getValue("date");
       return (
@@ -150,11 +145,10 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       }
       if (Array.isArray(value)) {
         if (isArrayOfDates(value) && rowValue instanceof Date) {
-          const sorted = value.sort((a, b) => a.getTime() - b.getTime());
+          const sorted = value.toSorted((a, b) => a.getTime() - b.getTime());
           // TODO: check length
           return (
-            sorted[0]?.getTime() <= rowValue.getTime() &&
-            rowValue.getTime() <= sorted[1]?.getTime()
+            sorted[0]?.getTime() <= rowValue.getTime() && rowValue.getTime() <= sorted[1]?.getTime()
           );
         }
       }

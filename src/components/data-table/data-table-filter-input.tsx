@@ -1,25 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
-
 import type { DataTableInputFilterField } from "./types";
+
 import { InputWithAddons } from "#client/components/custom/input-with-addons";
 import { useDataTable } from "#client/components/data-table/data-table-provider";
 import { Label } from "#client/components/ui/label";
 import { useDebounce } from "#client/hooks/use-debounce";
+import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 function getFilter(filterValue: unknown) {
   return typeof filterValue === "string" ? filterValue : null;
 }
 
-export function DataTableFilterInput<TData>({
-  value: _value,
-}: DataTableInputFilterField<TData>) {
+export function DataTableFilterInput<TData>({ value: _value }: DataTableInputFilterField<TData>) {
   const value = _value as string;
   const { table, columnFilters } = useDataTable();
   const column = table.getColumn(value);
-  const filterValue = columnFilters.find((i) => i.id === value)?.value;
+  const filterValue = columnFilters.find(i => i.id === value)?.value;
   const filters = getFilter(filterValue);
   const [input, setInput] = useState<string | null>(filters);
 
@@ -49,7 +47,7 @@ export function DataTableFilterInput<TData>({
         name={value}
         id={value}
         value={input || ""}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={e => setInput(e.target.value)}
       />
     </div>
   );

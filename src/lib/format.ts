@@ -10,16 +10,11 @@ export function formatLatency(ms: number): string {
     );
   }
 
-  return (
-    new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(ms) +
-    "ms"
-  );
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(ms) + "ms";
 }
 
 export function formatMilliseconds(value: number) {
-  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(
-    value
-  );
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 }).format(value);
 }
 
 export function formatDate(value: Date | string) {
@@ -33,7 +28,6 @@ export function formatCompactNumber(value: number) {
     return (value / 1000).toFixed(1) + "k"; // Convert to 'k' for thousands
   } else if (value >= 1000000) {
     return (value / 1000000).toFixed(1) + "M"; // Convert to 'M' for millions
-  } else {
-    return value.toString(); // Optionally handle numbers less than 100 if needed
   }
+  return value.toString(); // Optionally handle numbers less than 100 if needed
 }

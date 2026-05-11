@@ -1,6 +1,5 @@
+import { env } from "#server/env";
 import { S3Client } from "bun";
-
-import { env } from "#server/env.ts";
 
 export const s3Client = new S3Client({
   region: env.AWS_REGION,
