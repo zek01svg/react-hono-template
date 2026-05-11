@@ -6,7 +6,7 @@ A modern full-stack TypeScript template combining React frontend with Hono backe
 
 ### Prerequisites
 
-- Bun >=1.2.15
+- Bun >=1.3.13
 
 ### Development
 
@@ -70,7 +70,7 @@ bun start
 - **Oxc (oxlint/oxfmt)** - Hyper-fast code linting and formatting
 - **Vitest** - Fast unit testing framework
 - **esbuild** - High-speed bundling for production builds
-- **Husky + lint-staged** - Pre-commit quality gates
+- **Lefthook** - Pre-commit quality gates
 
 ## Runtime Environment Variables (`/api/runtime.js`)
 
@@ -128,14 +128,22 @@ This approach provides:
 
 ```
 react-hono-template/
-├── server/                 # Backend Hono server
-│   ├── drizzle/           # Database schema and migrations
-│   ├── lib/               # Server-side utilities (Auth, DB, S3)
+├── .github/
+│   └── workflows/         # CI workflow definitions
+├── scripts/               # Utility scripts (e.g. db seed)
+├── server/                # Backend Hono server
+│   ├── database/          # Database schema and migrations
+│   ├── lib/               # Server-side utilities (Auth, DB, Mailer, S3)
 │   ├── env.ts             # Server environment validation
 │   └── index.ts           # Main server entry point
+├── shared/                # Code shared between server and client
+│   └── constants/         # Shared constants (e.g. date presets)
 ├── src/                   # Frontend React application
-│   ├── features/          # Feature-based components (Landing, etc.)
+│   ├── components/        # Reusable UI components (ui/, custom/, data-table/)
+│   ├── features/          # Feature-based page components
+│   ├── hooks/             # Custom React hooks
 │   ├── lib/               # Frontend utilities and shared logic
+│   ├── providers/         # React context providers
 │   ├── routes/            # File-based routing
 │   ├── env.ts             # Client environment variables
 │   ├── main.tsx           # React app entry point
@@ -154,8 +162,21 @@ react-hono-template/
 - `bun format` - Check code formatting with **oxfmt**
 - `bun typecheck` - Run TypeScript type checking
 - `bun db:push` - Sync database schema with Drizzle
+- `bun db:studio` - Open Drizzle Studio for database inspection
 - `bun auth:generate` - Generate Better Auth client
+- `bun ui:add` - Add shadcn/ui components
 - `bun clean` - Clean build artifacts and dependencies
+
+## CI/CD
+
+The template ships with a GitHub Actions workflow (`.github/workflows/ci.yml`) that runs on every push and pull request:
+
+- **Secret scanning** - gitleaks checks for accidentally committed secrets
+- **Format check** - oxfmt verifies consistent code style
+- **Lint** - oxlint enforces code quality rules
+- **Type check** - `tsc --noEmit` catches type errors
+- **Tests** - Vitest runs the test suite
+- **Build** - verifies the production bundle compiles without errors
 
 ## Environment Variables
 
