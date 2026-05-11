@@ -37,7 +37,7 @@ export const configureAppLogging = ({
         lowestLevel: isDevelopment ? "debug" : "info",
       },
       {
-        category: "logtape",
+        category: ["logtape"],
         sinks: ["console"],
         lowestLevel: isDevelopment ? "debug" : "error",
       },

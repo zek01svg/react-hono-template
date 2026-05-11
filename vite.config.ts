@@ -10,9 +10,9 @@ import path from "path";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const sentryAuthToken = env.SENTRY_AUTH_TOKEN;
-  const sentryOrg = env.VITE_SENTRY_ORG;
-  const sentryProject = env.VITE_SENTRY_PROJECT;
+  const sentryAuthToken = env.SENTRY_AUTH_TOKEN?.trim();
+  const sentryOrg = env.VITE_SENTRY_ORG?.trim();
+  const sentryProject = env.VITE_SENTRY_PROJECT?.trim();
   const shouldUploadSourcemaps =
     mode === "production" && Boolean(sentryAuthToken && sentryOrg && sentryProject);
 

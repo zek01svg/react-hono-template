@@ -27,6 +27,31 @@ const logger = getAppLogger("server", "http");
 const app = new Hono();
 Sentry.setupHonoErrorHandler(app);
 
+const logRequestCompleted = ({
+  method,
+  path,
+  status,
+  durationMs,
+  trace_id,
+  span_id,
+}: {
+  method: string;
+  path: string;
+  status: number;
+  durationMs: number;
+  trace_id?: string;
+  span_id?: string;
+}) => {
+  logger.info("request.completed", {
+    method,
+    path,
+    status,
+    durationMs,
+    trace_id,
+    span_id,
+  });
+};
+
 app.use(async (c, next) => {
   const requestName = `${c.req.method} ${c.req.path}`;
   const startTime = performance.now();
@@ -41,7 +66,7 @@ app.use(async (c, next) => {
         await next();
         const activeSpan = Sentry.getActiveSpan();
         const span = activeSpan ? Sentry.spanToJSON(activeSpan) : undefined;
-        logger.info("request.completed", {
+        logRequestCompleted({
           method: c.req.method,
           path: c.req.path,
           status: c.res.status,
@@ -54,7 +79,7 @@ app.use(async (c, next) => {
   }
 
   await next();
-  logger.info("request.completed", {
+  logRequestCompleted({
     method: c.req.method,
     path: c.req.path,
     status: c.res.status,
