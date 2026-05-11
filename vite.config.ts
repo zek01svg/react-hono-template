@@ -16,9 +16,12 @@ export default defineConfig(({ mode }) => {
   const shouldUploadSourcemaps =
     mode === "production" && Boolean(sentryAuthToken && sentryOrg && sentryProject);
 
-  const clientEnv = Object.fromEntries(
-    Object.entries(env).filter(([key]) => key.startsWith("VITE_"))
-  );
+  const clientEnv = {
+    VITE_APP_URL: env.VITE_APP_URL,
+    VITE_SENTRY_DSN: env.VITE_SENTRY_DSN,
+    VITE_SENTRY_ORG: env.VITE_SENTRY_ORG,
+    VITE_SENTRY_PROJECT: env.VITE_SENTRY_PROJECT,
+  };
 
   return {
     plugins: [
