@@ -26,8 +26,10 @@ data
 *.sln
 *.sw?
 
-# Coverage
+# Coverage & Test output
 coverage.json
+test-results/
+playwright-report/
 
 # Environment variables
 .env
