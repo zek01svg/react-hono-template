@@ -63,6 +63,7 @@ export const env = createEnv({
     AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
     FORCE_PATH_STYLE: process.env.FORCE_PATH_STYLE,
   },
+  emptyStringAsUndefined: true,
   skipValidation:
     !!process.env.CI ||
     process.env.npm_lifecycle_event === "lint" ||

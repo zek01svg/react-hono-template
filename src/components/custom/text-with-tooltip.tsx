@@ -1,3 +1,6 @@
+import { TooltipPortal } from "@radix-ui/react-tooltip";
+import { useEffect, useRef, useState } from "react";
+
 import {
   Tooltip,
   TooltipContent,
@@ -5,8 +8,6 @@ import {
   TooltipTrigger,
 } from "#client/components/ui/tooltip";
 import { cn } from "#client/lib/utils";
-import { TooltipPortal } from "@radix-ui/react-tooltip";
-import { useEffect, useRef, useState } from "react";
 
 interface TextWithTooltipProps {
   text: string | number;
@@ -46,11 +47,7 @@ export function TextWithTooltip({ text, className }: TextWithTooltipProps) {
         <TooltipTrigger disabled={!isTruncated} asChild>
           <div
             ref={textRef}
-            className={cn(
-              "truncate",
-              !isTruncated && "pointer-events-none",
-              className,
-            )}
+            className={cn("truncate", !isTruncated && "pointer-events-none", className)}
           >
             {text}
           </div>

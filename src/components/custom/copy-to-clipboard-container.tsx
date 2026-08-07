@@ -2,13 +2,14 @@
 
 import type { VariantProps } from "class-variance-authority";
 
+import { cva } from "class-variance-authority";
+import { Check, Copy, Plus } from "lucide-react";
+import * as React from "react";
+
 import { Button } from "#client/components/ui/button";
 import { useCopyToClipboard } from "#client/hooks/use-copy-to-clipboard";
 import { composeRefs } from "#client/lib/compose-refs";
 import { cn } from "#client/lib/utils";
-import { cva } from "class-variance-authority";
-import { Check, Copy, Plus } from "lucide-react";
-import * as React from "react";
 
 const containerVariants = cva(
   "peer rounded-md border p-2 font-mono text-sm break-all whitespace-pre-wrap",
@@ -22,13 +23,11 @@ const containerVariants = cva(
         variant: "default",
       },
     },
-  },
+  }
 );
 
 export interface CopyToClipboardContainerProps
-  extends
-    React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof containerVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof containerVariants> {
   /**
    * If set and the content exceeds the maximum height,
    * a "Show content" button will collapse the full content
@@ -69,10 +68,8 @@ export const CopyToClipboardContainer = React.forwardRef<
         ref={composeRefs(ref, innerRef)}
         className={cn(
           containerVariants({ variant }),
-          collapsible && !open
-            ? "max-h-[var(--max-height)] overflow-hidden"
-            : undefined,
-          className,
+          collapsible && !open ? "max-h-[var(--max-height)] overflow-hidden" : undefined,
+          className
         )}
         {...props}
       >
@@ -84,14 +81,10 @@ export const CopyToClipboardContainer = React.forwardRef<
         className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 peer-focus:opacity-100 focus:opacity-100"
         onClick={() => {
           const content = innerRef.current?.textContent;
-          if (content) copy(content);
+          if (content) void copy(content);
         }}
       >
-        {!isCopied ? (
-          <Copy className="h-3 w-3" />
-        ) : (
-          <Check className="h-3 w-3" />
-        )}
+        {!isCopied ? <Copy className="h-3 w-3" /> : <Check className="h-3 w-3" />}
       </Button>
       {collapsible && !open ? (
         <div className="from-background/0 to-background/100 absolute inset-x-px bottom-px flex items-center justify-center rounded-b-md bg-gradient-to-b">

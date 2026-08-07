@@ -122,12 +122,7 @@
       // upstream data-table template. Stylistic rules are off here because these
       // files are re-pulled from upstream, not hand-maintained. Correctness
       // rules stay on.
-      "files": [
-        "src/components/ui/**",
-        "src/components/custom/**",
-        "src/components/data-table/**",
-        "src/components/data-table-demo/**"
-      ],
+      "files": ["src/components/ui/**", "src/components/custom/**"],
       "rules": {
         "max-lines": "off",
         "max-lines-per-function": "off",

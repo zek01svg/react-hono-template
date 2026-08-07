@@ -3,17 +3,23 @@
 import { useEffect, useState, useCallback } from "react";
 
 function getItemFromLocalStorage(key: string) {
-  const item = window?.localStorage.getItem(key);
-  if (item) return JSON.parse(item);
+  const item = window.localStorage.getItem(key);
+  if (item) {
+    try {
+      return JSON.parse(item);
+    } catch {
+      return null;
+    }
+  }
 
   return null;
 }
 
 export function useLocalStorage<T>(
   key: string,
-  initialValue: T,
+  initialValue: T
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const [storedValue, setStoredValue] = useState(initialValue);
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
 
   useEffect(() => {
     // initialize
@@ -24,8 +30,8 @@ export function useLocalStorage<T>(
   }, [key]);
 
   const setValue: React.Dispatch<React.SetStateAction<T>> = useCallback(
-    (value) => {
-      if (value instanceof Function) {
+    value => {
+      if (typeof value === "function") {
         setStoredValue((prev: T) => {
           const newValue = value(prev);
           // Save to localStorage
@@ -37,9 +43,8 @@ export function useLocalStorage<T>(
         // Save to localStorage
         window.localStorage.setItem(key, JSON.stringify(value));
       }
-      return setStoredValue;
     },
-    [key, setStoredValue],
+    [key]
   );
 
   return [storedValue, setValue];

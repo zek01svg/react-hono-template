@@ -1,8 +1,6 @@
-"use client";
-
-import { cn } from "#client/lib/utils";
-import * as SeparatorPrimitive from "@radix-ui/react-separator";
+import { Separator as SeparatorPrimitive } from "radix-ui";
 import * as React from "react";
+import { cn } from "src/lib/utils";
 
 function Separator({
   className,
@@ -17,7 +15,7 @@ function Separator({
       orientation={orientation}
       className={cn(
         "bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
-        className,
+        className
       )}
       {...props}
     />

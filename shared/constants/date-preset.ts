@@ -1,6 +1,11 @@
-import type { DatePreset } from "#client/components/data-table/types.ts";
-
 import { addDays, addHours, endOfDay, startOfDay } from "date-fns";
+
+export type DatePreset = {
+  label: string;
+  from: Date;
+  to: Date;
+  shortcut: string;
+};
 
 export const presets = [
   {
