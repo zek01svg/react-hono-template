@@ -7,7 +7,8 @@ export const presets = [
     label: "Today",
     from: startOfDay(new Date()),
     to: endOfDay(new Date()),
-    shortcut: "d", // day
+    // day
+    shortcut: "d",
   },
   {
     label: "Yesterday",
@@ -31,7 +32,8 @@ export const presets = [
     label: "Last 14 days",
     from: startOfDay(addDays(new Date(), -14)),
     to: endOfDay(new Date()),
-    shortcut: "b", // bi-weekly
+    // bi-weekly
+    shortcut: "b",
   },
   {
     label: "Last 30 days",

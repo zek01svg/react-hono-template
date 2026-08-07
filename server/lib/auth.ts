@@ -1,9 +1,10 @@
-import { env } from "#server/env";
-import { db } from "#server/lib/db";
-import { mailer } from "#server/lib/mailer";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { openAPI } from "better-auth/plugins";
+
+import { env } from "#server/env";
+import { db } from "#server/lib/db";
+import { mailer } from "#server/lib/mailer";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

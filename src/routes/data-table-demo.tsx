@@ -32,7 +32,7 @@ function RouteComponent() {
                 id: key,
                 value,
               }))
-              .filter(({ value }) => value !== undefined && value !== null)}
+              .filter(({ value }) => value !== null)}
           />
         </React.Suspense>
       </div>

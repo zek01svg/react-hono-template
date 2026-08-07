@@ -1,5 +1,6 @@
+import { createContext, useContext, useMemo } from "react";
+
 import { useLocalStorage } from "#client/hooks/use-local-storage";
-import { createContext, useContext } from "react";
 
 interface ControlsContextType {
   open: boolean;
@@ -10,9 +11,10 @@ export const ControlsContext = createContext<ControlsContextType | null>(null);
 
 export function ControlsProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useLocalStorage("data-table-controls", true);
+  const value = useMemo(() => ({ open, setOpen }), [open, setOpen]);
 
   return (
-    <ControlsContext.Provider value={{ open, setOpen }}>
+    <ControlsContext.Provider value={value}>
       <div
         // REMINDER: access the data-expanded state with tailwind via `group-data-[expanded=true]/controls:block`
         // In tailwindcss v4, we could even use `group-data-expanded/controls:block`
@@ -32,5 +34,5 @@ export function useControls() {
     throw new Error("useControls must be used within a ControlsProvider");
   }
 
-  return context as ControlsContextType;
+  return context;
 }

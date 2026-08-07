@@ -9,17 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DataTableDemoRouteImport } from './routes/data-table-demo'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DataTableDemoRouteImport } from './routes/data-table-demo'
 
-const DataTableDemoRoute = DataTableDemoRouteImport.update({
-  id: '/data-table-demo',
-  path: '/data-table-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DataTableDemoRoute = DataTableDemoRouteImport.update({
+  id: '/data-table-demo',
+  path: '/data-table-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -51,18 +51,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/data-table-demo': {
-      id: '/data-table-demo'
-      path: '/data-table-demo'
-      fullPath: '/data-table-demo'
-      preLoaderRoute: typeof DataTableDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/data-table-demo': {
+      id: '/data-table-demo'
+      path: '/data-table-demo'
+      fullPath: '/data-table-demo'
+      preLoaderRoute: typeof DataTableDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
