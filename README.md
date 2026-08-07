@@ -1,172 +1,62 @@
 # React + Hono Template
 
-A modern full-stack TypeScript template combining React frontend with Hono backend, designed for rapid development and production deployment.
+[![CI](https://github.com/zek01svg/react-hono-template/actions/workflows/ci.yml/badge.svg)](https://github.com/zek01svg/react-hono-template/actions/workflows/ci.yml)
 
-## How to Run
+A modern full-stack TypeScript template combining React frontend with Hono backend running on Bun, designed for rapid development and production-ready deployments.
 
-### Prerequisites
+---
 
-- Bun >=1.2.15
-
-### Development
+## Quick Start
 
 ```bash
-# Install dependencies
+# 1. Install dependencies
 bun install
 
-# Start development server (both frontend and backend)
+# 2. Start development services (Postgres, Maildev, MinIO)
+docker compose up -d
+
+# 3. Start development server (Frontend: 4000, Backend: 4001)
 bun dev
 ```
 
-This will start:
+---
 
-- Backend server on http://localhost:4001
-- Frontend dev server on http://localhost:4000 (proxies API calls to backend)
+## Common Scripts
 
-### Individual Components
+| Command            | Action                                                          |
+| :----------------- | :-------------------------------------------------------------- |
+| `bun dev`          | Start frontend and backend development servers concurrently     |
+| `bun build`        | Build production bundles (server executable & static React SPA) |
+| `bun start`        | Run production server (`NODE_ENV=production bun dist/index.js`) |
+| `bun test:unit`    | Run unit tests with Vitest                                      |
+| `bun test:e2e`     | Run end-to-end browser tests with Playwright                    |
+| `bun format:check` | Verify code formatting with **oxfmt**                           |
+| `bun lint:check`   | Lint source files with **oxlint**                               |
+| `bun type:check`   | Type-check project with `tsc --noEmit`                          |
+| `bun db:push`      | Push Drizzle schema changes to PostgreSQL                       |
+| `bun db:studio`    | Open interactive Drizzle Studio database browser                |
 
-```bash
-# Start only the backend server
-bun dev:server
-
-# Start only the frontend (requires backend to be running)
-bun dev:vite
-```
-
-### Production
-
-```bash
-# Build the application
-bun build
-
-# Start production server
-bun start
-```
+---
 
 ## Tech Stack
 
-### Frontend
+- **Frontend**: React 19, TanStack Router & Query, Vite, Tailwind CSS v4, Radix UI / shadcn.
+- **Backend**: Hono web framework running on native Bun runtime.
+- **Database & Auth**: PostgreSQL, Drizzle ORM, Better Auth.
+- **API Specs & Observability**: hono-openapi, Scalar API docs, Logtape logging, Sentry error tracking.
+- **Quality & CI**: Oxc (oxlint/oxfmt), Lefthook pre-commit hooks, Vitest, Playwright.
 
-- **React 19** - Latest React with concurrent features
-- **TanStack Router** - Type-safe routing with file-based routing
-- **TanStack Query** - Server state management and caching
-- **Vite** - Fast build tool and dev server
-- **Tailwind CSS v4** - Utility-first CSS framework
-- **TypeScript** - Type safety across the entire stack
+---
 
-### Backend
+## Documentation
 
-- **Hono** - Fast, lightweight web framework for TypeScript
-- **Bun** - Native runtime execution for maximum performance
-- **Better Auth** - Production-ready authentication for Hono and React
-- **Drizzle ORM** - Type-safe ORM for PostgreSQL
-- **Scalar** - Beautiful, interactive API documentation at `/api/scalar`
-- **hono-openapi** - Automated OpenAPI spec generation
-- **Zod** - Schema validation and type inference
-- **@t3-oss/env-core** - Type-safe environment variable validation
+Detailed documentation is available in the [`docs/`](./docs) directory:
 
-### Development Tools
+| Document                                         | Purpose                                                                                                          |
+| :----------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| [**Architecture**](./docs/ARCHITECTURE.md)       | System design, component diagrams, runtime env injection (`/api/runtime.js`), telemetry, & auth model.           |
+| [**Contributing Guide**](./docs/CONTRIBUTING.md) | Local setup, Docker services, code quality standards (oxlint/oxfmt), database migrations, & testing.             |
+| [**Deployment Guide**](./docs/DEPLOYMENT.md)     | Multi-stage Docker build pipeline, production runtime configuration, & reverse proxy setup.                      |
+| [**API Documentation**](./docs/API.md)           | Hono route definitions, OpenAPI specifications, interactive Scalar explorer UI (`/api/scalar`), & error schemas. |
 
-- **Oxc (oxlint/oxfmt)** - Hyper-fast code linting and formatting
-- **Vitest** - Fast unit testing framework
-- **esbuild** - High-speed bundling for production builds
-- **Husky + lint-staged** - Pre-commit quality gates
-
-## Runtime Environment Variables (`/api/runtime.js`)
-
-The template includes a special endpoint at `/api/runtime.js` that dynamically injects environment variables into the client at runtime. This script is loaded in `index.html`:
-
-```html
-<script type="text/javascript" src="/api/runtime.js"></script>
-```
-
-### Why This Exists
-
-This pattern solves a critical problem with client-side environment variables in containerized/production deployments:
-
-1. **Build-time vs Runtime**: Vite normally bakes environment variables into the bundle at build time via `import.meta.env`
-2. **Container Flexibility**: With Docker/K8s, you want to build once and deploy anywhere with different env vars
-3. **Dynamic Configuration**: The `/api/runtime.js` endpoint serves a JavaScript snippet that sets `window.__env` with current server environment variables
-
-### How It Works
-
-1. **Server endpoint** (`server/index.ts` lines 13-21):
-
-   ```typescript
-   .get("/api/runtime.js", (c) => {
-     return c.text(
-       `window.__env = ${JSON.stringify(
-         Object.fromEntries(
-           Object.entries(env).filter(([key]) => key.startsWith("VITE_"))
-         ), null, 2
-       )}`,
-       200,
-       { "Content-Type": "application/javascript" }
-     );
-   })
-   ```
-
-2. **Client consumption** (`src/env.ts`):
-
-   ```typescript
-   export const env: Env = {
-     VITE_APP_URL: window.__env?.VITE_APP_URL ?? import.meta.env.VITE_APP_URL,
-     // Falls back to build-time values if runtime values unavailable
-   };
-   ```
-
-3. **Type safety**: Both server and client env configs use Zod schemas for validation
-
-This approach provides:
-
-- ✅ **Container-friendly**: Same build works across environments
-- ✅ **Type-safe**: Full TypeScript support for env vars
-- ✅ **Fallback support**: Works in development with build-time values
-- ✅ **Secure**: Only `VITE_` prefixed variables are exposed to client
-
-## Project Structure
-
-```
-react-hono-template/
-├── server/                 # Backend Hono server
-│   ├── drizzle/           # Database schema and migrations
-│   ├── lib/               # Server-side utilities (Auth, DB, S3)
-│   ├── env.ts             # Server environment validation
-│   └── index.ts           # Main server entry point
-├── src/                   # Frontend React application
-│   ├── features/          # Feature-based components (Landing, etc.)
-│   ├── lib/               # Frontend utilities and shared logic
-│   ├── routes/            # File-based routing
-│   ├── env.ts             # Client environment variables
-│   ├── main.tsx           # React app entry point
-│   └── globals.css        # Global styles
-├── dist/                  # Production build output
-└── tests/                 # Test files
-```
-
-## Scripts
-
-- `bun dev` - Start development environment
-- `bun build` - Build for production
-- `bun start` - Start production server
-- `bun test` - Run tests
-- `bun lint` - Lint code with **oxlint**
-- `bun format` - Check code formatting with **oxfmt**
-- `bun typecheck` - Run TypeScript type checking
-- `bun db:push` - Sync database schema with Drizzle
-- `bun auth:generate` - Generate Better Auth client
-- `bun clean` - Clean build artifacts and dependencies
-
-## Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# Required for client
-VITE_APP_URL=http://localhost:4000
-
-# Server configuration
-NODE_ENV=development
-```
-
-All `VITE_` prefixed variables are automatically exposed to the client through the runtime.js mechanism.
+---

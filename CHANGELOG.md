@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-05-11
+
+### Added
+
+- **Observability**: Integrated unified structured logging with Logtape for both frontend and backend.
+- **Error Tracking**: Added Sentry instrumentation for comprehensive production observability.
+
+## [1.2.0] - 2026-05-10
+
+### Added
+
+- **CI/CD**: GitHub Actions workflow with secret scanning (gitleaks), formatting, linting, type checking, tests, and build checks on every push and pull request.
+- **Stricter linting**: Merged oxlint/oxfmt configs from a stricter baseline — added `suspicious` error category, `no-console`, `no-floating-promises`, `no-misused-promises`, `node/no-process-env`, and `no-shadow` rules.
+- **Shared module**: `shared/` directory for code shared between the server and client (e.g. date preset constants).
+
+### Changed
+
+- **Config format**: Converted `oxlint.config.ts` to `.oxlintrc.json` to avoid TypeScript parse errors in CI.
+- **oxfmt**: Standardised `printWidth` to 100 and aligned formatting options with project conventions.
+
+---
+
 ## [1.1.0] - 2026-04-22
 
 ### Added
@@ -9,7 +31,7 @@ All notable changes to this project will be documented in this file.
 - **API Documentation**: Integrated interactive Scalar UI at `/api/scalar` powered by `hono-openapi`.
 - **Feature Modules**: Implemented feature-based directory structure (`src/features/`) with new Landing Page and Not Found components.
 - **Structured Validation**: Added a global error handler for schema validation failures with consistent JSON responses.
-- **Tooling**: Added lint-staged and husky for pre-commit quality gates.
+- **Tooling**: Added Lefthook for pre-commit quality gates.
 
 ### Changed
 
