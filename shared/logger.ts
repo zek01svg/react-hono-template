@@ -1,4 +1,11 @@
-import { configureSync, getConsoleSink, getLogger, withFilter } from "@logtape/logtape";
+import {
+  ansiColorFormatter,
+  configureSync,
+  getConsoleSink,
+  getLogger,
+  jsonLinesFormatter,
+  withFilter,
+} from "@logtape/logtape";
 import { getSentrySink } from "@logtape/sentry";
 
 export type AppRuntime = "browser" | "server";
@@ -16,8 +23,10 @@ export const configureAppLogging = ({
   enableSentrySink,
   sentryBreadcrumbs = true,
 }: ConfigureAppLoggingOptions): void => {
+  const formatter = isDevelopment ? ansiColorFormatter : jsonLinesFormatter;
+  const baseConsoleSink = getConsoleSink({ formatter });
   const consoleSink =
-    !isDevelopment && enableSentrySink ? withFilter(getConsoleSink(), "warning") : getConsoleSink();
+    !isDevelopment && enableSentrySink ? withFilter(baseConsoleSink, "warning") : baseConsoleSink;
   const sinks = {
     console: consoleSink,
     ...(enableSentrySink
