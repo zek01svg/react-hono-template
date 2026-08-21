@@ -15,6 +15,8 @@ docs/
 ├── CONTRIBUTING.md   # Developer setup, coding standards, database workflows, & testing
 ├── DEPLOYMENT.md     # Production build, Docker containerization, & environment setup
 └── API.md            # API design, routes, OpenAPI specifications, & error schemas
+
+DESIGN.md            # Visual identity: design tokens & rationale (repo root)
 ```
 
 ---
@@ -62,6 +64,15 @@ If you are developing backend endpoints or integrating frontend components with 
   - Interactive API Reference (`/api/scalar`) & OpenAPI Specs (`/api/openapi`)
   - Authentication Endpoints (`/api/auth/*`)
   - Standardized Error Formats & Validation Handling
+
+### Design & Identity
+
+If you are building UI, choosing colors or type, or restyling components:
+
+- [**Design System**](../DESIGN.md)
+  - Design Tokens (colors, typography, spacing, radii) in [DESIGN.md format](https://github.com/google-labs-code/design.md)
+  - Layout, Elevation & Component Guidance
+  - Do's and Don'ts for the monochrome visual identity
 
 ---
 

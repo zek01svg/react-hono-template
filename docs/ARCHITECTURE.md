@@ -129,6 +129,7 @@ The frontend is a modern React 19 application built with Vite and Tailwind CSS v
   - **Tailwind CSS v4** via `@tailwindcss/vite`.
   - **Radix UI** primitives and **shadcn/ui** reusable components.
   - Lucide React icons, Sonner toast notifications, and Recharts visualization.
+- **Theming**: Design tokens live in `src/globals.css` (Tailwind v4 `@theme`), following the visual identity defined in [`DESIGN.md`](../DESIGN.md) — a monochrome palette with Inter Variable for UI text, a monospace display voice, and light/dark themes toggled by **next-themes** (`class` strategy). A pre-paint inline script in `index.html` applies the stored theme before first render.
 - **Form Validation**: Managed by **TanStack Form** or **React Hook Form** paired with **Zod** schema validation.
 
 ---

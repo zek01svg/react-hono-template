@@ -200,6 +200,10 @@ bun shadcn add <component-name>
 
 Components are output into `src/components/ui/`.
 
+### Visual Identity
+
+The template's look and feel is specified in [`DESIGN.md`](../DESIGN.md) — the source of truth for colors, typography, spacing, and component styling. Its machine-readable tokens are implemented in `src/globals.css`; when changing the design, update `DESIGN.md` first, then mirror the values in `globals.css` so the two stay in sync.
+
 ---
 
 ## 8. Testing Strategy

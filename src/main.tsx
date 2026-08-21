@@ -1,5 +1,7 @@
 import * as Sentry from "@sentry/react";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
+import "@fontsource-variable/inter";
+import { ThemeProvider } from "next-themes";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
@@ -49,11 +51,13 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <ReactQueryProvider>
-        <NuqsProvider>
-          <RouterProvider router={router} />
-        </NuqsProvider>
-      </ReactQueryProvider>
+      <ThemeProvider attribute="class">
+        <ReactQueryProvider>
+          <NuqsProvider>
+            <RouterProvider router={router} />
+          </NuqsProvider>
+        </ReactQueryProvider>
+      </ThemeProvider>
     </StrictMode>
   );
 }

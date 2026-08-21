@@ -52,11 +52,12 @@ bun dev
 
 Detailed documentation is available in the [`docs/`](./docs) directory:
 
-| Document                                         | Purpose                                                                                                          |
-| :----------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
-| [**Architecture**](./docs/ARCHITECTURE.md)       | System design, component diagrams, runtime env injection (`/api/runtime.js`), telemetry, & auth model.           |
-| [**Contributing Guide**](./docs/CONTRIBUTING.md) | Local setup, Docker services, code quality standards (oxlint/oxfmt), database migrations, & testing.             |
-| [**Deployment Guide**](./docs/DEPLOYMENT.md)     | Multi-stage Docker build pipeline, production runtime configuration, & reverse proxy setup.                      |
-| [**API Documentation**](./docs/API.md)           | Hono route definitions, OpenAPI specifications, interactive Scalar explorer UI (`/api/scalar`), & error schemas. |
+| Document                                         | Purpose                                                                                                                                                |
+| :----------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [**Architecture**](./docs/ARCHITECTURE.md)       | System design, component diagrams, runtime env injection (`/api/runtime.js`), telemetry, & auth model.                                                 |
+| [**Contributing Guide**](./docs/CONTRIBUTING.md) | Local setup, Docker services, code quality standards (oxlint/oxfmt), database migrations, & testing.                                                   |
+| [**Deployment Guide**](./docs/DEPLOYMENT.md)     | Multi-stage Docker build pipeline, production runtime configuration, & reverse proxy setup.                                                            |
+| [**API Documentation**](./docs/API.md)           | Hono route definitions, OpenAPI specifications, interactive Scalar explorer UI (`/api/scalar`), & error schemas.                                       |
+| [**Design System**](./DESIGN.md)                 | Visual identity tokens (colors, typography, spacing) & design rationale for agents and humans ([spec](https://github.com/google-labs-code/design.md)). |
 
 ---

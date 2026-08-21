@@ -1,6 +1,14 @@
 import { defineConfig, defineProject, mergeConfig } from "vitest/config";
 
+import path from "node:path";
+
 export const baseConfig = defineConfig({
+  resolve: {
+    alias: {
+      // shadcn-generated components import via root-relative "src/..." paths
+      src: path.resolve(import.meta.dirname, "src"),
+    },
+  },
   test: {
     coverage: {
       provider: "istanbul" as const,
